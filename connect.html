@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Lexi Stevens">
+  <meta name="description" content="Get in touch with Lexi Stevens for UX/UI design projects, collaborations, and consulting. Available for freelance and full-time opportunities.">
+  <meta name="keywords" content="Contact UX Designer, Hire Designer, Design Services, UX Design Agency, Product Design Consulting, Design Strategy, LinkedIn, Freelance Designer, Design Collaboration, UX Design Jobs, Woman in Tech">
+  <meta name="theme-color" content="#1a1a1a">
+  <meta property="og:title" content="Connect - Lexi Stevens">
+  <meta property="og:description" content="Let's collaborate on your next design project. Get in touch for UX/UI design services and consulting.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lexistevens.com/connect">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Connect with Lexi Stevens">
+  <meta name="twitter:description" content="Available for design projects, consulting, and collaborations. Let's create something amazing.">
+  <title>Connect - Lexi Stevens</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ===================================
+       NAVBAR
+       =================================== -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">LS</a>
+      <button class="menu-toggle">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="portfolio.html">Design Insights</a></li>
+        <li><a href="connect.html" class="active">Connect</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===================================
+       HERO SECTION
+       =================================== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>
+        Let's <span>Connect</span>
+        <br>
+        I'd love to hear from you
+      </h1>
+      <p>Whether you have a project in mind, want to collaborate, or just want to chat about design — let's get in touch!</p>
+    </div>
+  </section>
+
+  <!-- ===================================
+       CONTACT INFORMATION
+       =================================== -->
+  <section>
+    <h2>Get In <span>Touch</span></h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem; margin-bottom: 3rem;">
+      
+      <div style="background: var(--darker-bg); padding: 2rem; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.borderColor='var(--pink)'" onmouseout="this.style.borderColor='var(--border-color)'">
+        <h3 style="color: var(--pink); margin-bottom: 0.5rem; font-size: 1.3rem;">📧 Email</h3>
+        <p style="margin-bottom: 1rem;">hello@lexistevens.com</p>
+        <p style="font-size: 0.9rem; color: var(--gold);">I typically respond within 24 hours</p>
+      </div>
+
+      <div style="background: var(--darker-bg); padding: 2rem; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.borderColor='var(--purple)'" onmouseout="this.style.borderColor='var(--border-color)'">
+        <h3 style="color: var(--purple); margin-bottom: 0.5rem; font-size: 1.3rem;">📱 Social Media</h3>
+        <p style="margin-bottom: 1rem;">Instagram | LinkedIn | Twitter</p>
+        <p style="font-size: 0.9rem; color: var(--gold);">Follow me for design insights and updates</p>
+      </div>
+
+      <div style="background: var(--darker-bg); padding: 2rem; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border-color)'">
+        <h3 style="color: var(--gold); margin-bottom: 0.5rem; font-size: 1.3rem;">📍 Location</h3>
+        <p style="margin-bottom: 1rem;">Based in Major City, USA</p>
+        <p style="font-size: 0.9rem; color: var(--gold);">Available for remote or in-person meetings</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================
+       CONTACT FORM
+       =================================== -->
+  <section>
+    <h2>Send Me A <span>Message</span></h2>
+    <form class="contact-form">
+      <div class="form-group">
+        <label for="name">Your Name *</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number (Optional)</label>
+        <input type="tel" id="phone" name="phone">
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject *</label>
+        <input type="text" id="subject" name="subject" required>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="budget">Project Budget (Optional)</label>
+        <select id="budget" name="budget" style="width: 100%; padding: 0.8rem; background: var(--darker-bg); border: 1px solid var(--border-color); color: var(--white); border-radius: 5px; font-family: inherit;">
+          <option value="">Select a range</option>
+          <option value="5k-10k">$5,000 - $10,000</option>
+          <option value="10k-25k">$10,000 - $25,000</option>
+          <option value="25k-50k">$25,000 - $50,000</option>
+          <option value="50k+">$50,000+</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="projectType">Project Type (Optional)</label>
+        <select id="projectType" name="projectType" style="width: 100%; padding: 0.8rem; background: var(--darker-bg); border: 1px solid var(--border-color); color: var(--white); border-radius: 5px; font-family: inherit;">
+          <option value="">Select a type</option>
+          <option value="website">Website Design</option>
+          <option value="app">App Design</option>
+          <option value="branding">Branding</option>
+          <option value="strategy">UX Strategy</option>
+          <option value="consulting">Consulting</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn" style="width: 100%; cursor: pointer;">Send Message</button>
+    </form>
+  </section>
+
+  <!-- ===================================
+       FAQ SECTION
+       =================================== -->
+  <section>
+    <h2>Frequently Asked <span>Questions</span></h2>
+    <div style="max-width: 800px; margin: 2rem auto;">
+      
+      <div style="background: var(--darker-bg); padding: 1.5rem; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid var(--pink);">
+        <h4 style="color: var(--white); margin-bottom: 0.5rem; cursor: pointer;" onclick="toggleAnswer(this)">What is your typical project timeline? ▼</h4>
+        <p style="display: none; color: var(--light-text); margin-top: 1rem;">Most projects take 4-8 weeks depending on scope and complexity. I'll provide a detailed timeline once we discuss your specific requirements.</p>
+      </div>
+
+      <div style="background: var(--darker-bg); padding: 1.5rem; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid var(--purple);">
+        <h4 style="color: var(--white); margin-bottom: 0.5rem; cursor: pointer;" onclick="toggleAnswer(this)">Do you work with startups? ▼</h4>
+        <p style="display: none; color: var(--light-text); margin-top: 1rem;">Yes! I love working with startups and early-stage companies. I can offer flexible packages and have experience scaling designs as companies grow.</p>
+      </div>
+
+      <div style="background: var(--darker-bg); padding: 1.5rem; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid var(--gold);">
+        <h4 style="color: var(--white); margin-bottom: 0.5rem; cursor: pointer;" onclick="toggleAnswer(this)">Do you offer retainer work? ▼</h4>
+        <p style="display: none; color: var(--light-text); margin-top: 1rem;">Absolutely! I offer retainer packages for ongoing design work and support. This is great for teams that need consistent design partnership.</p>
+      </div>
+
+      <div style="background: var(--darker-bg); padding: 1.5rem; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid var(--pink);">
+        <h4 style="color: var(--white); margin-bottom: 0.5rem; cursor: pointer;" onclick="toggleAnswer(this)">What's your design process? ▼</h4>
+        <p style="display: none; color: var(--light-text); margin-top: 1rem;">My process includes: Discovery & Research → Strategy → Wireframing → Design → Prototyping → Testing → Implementation. I believe in collaborative, user-centered design.</p>
+      </div>
+
+      <div style="background: var(--darker-bg); padding: 1.5rem; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid var(--purple);">
+        <h4 style="color: var(--white); margin-bottom: 0.5rem; cursor: pointer;" onclick="toggleAnswer(this)">Do you handle design handoff to developers? ▼</h4>
+        <p style="display: none; color: var(--light-text); margin-top: 1rem;">Yes, I provide detailed design specifications and assets prepared for developers. I'm also available for collaboration during the implementation phase.</p>
+      </div>
+
+      <div style="background: var(--darker-bg); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--gold);">
+        <h4 style="color: var(--white); margin-bottom: 0.5rem; cursor: pointer;" onclick="toggleAnswer(this)">What's your availability? ▼</h4>
+        <p style="display: none; color: var(--light-text); margin-top: 1rem;">I take on 2-3 projects simultaneously to ensure quality. I'm typically available to start new projects within 2-3 weeks. Contact me to check current availability!</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================
+       FOOTER
+       =================================== -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="connect.html">Connect</a>
+        <a href="#" onclick="alert('Follow me on social media!')">Instagram</a>
+        <a href="#" onclick="alert('Connect with me!')">LinkedIn</a>
+      </div>
+      <p>&copy; 2026 Lexi Stevens. All rights reserved.</p>
+      <p style="color: var(--gold); margin-top: 1rem;">Designed & Built with Purpose</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Toggle FAQ answers
+    function toggleAnswer(element) {
+      const answer = element.nextElementSibling;
+      const isHidden = answer.style.display === 'none';
+      
+      // Hide all answers
+      document.querySelectorAll('.contact-form').forEach(form => {
+        const answers = form.parentElement.querySelectorAll('p[style*="display"]');
+      });
+      
+      document.querySelectorAll('section p[style*="display: none"]').forEach(p => {
+        if (p.previousElementSibling && p.previousElementSibling.style.cursor === 'pointer') {
+          p.style.display = 'none';
+        }
+      });
+      
+      // Toggle current answer
+      if (isHidden) {
+        answer.style.display = 'block';
+      } else {
+        answer.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
