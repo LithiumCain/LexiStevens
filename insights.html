@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Lexi Stevens">
+  <meta name="description" content="Design Insights - Lexi Stevens' personal takes on design in the real world. Design critiques, love-it or loathe-it analysis of digital products and interfaces.">
+  <meta name="keywords" content="Design Critique, UX/UI Analysis, Design Insights, Product Design, Interface Design, Design Opinion, Digital Products, User Experience, Design Trends">
+  <meta name="theme-color" content="#1a1a1a">
+  <meta property="og:title" content="Design Insights - Lexi Stevens">
+  <meta property="og:description" content="Personal design critiques and insights. Love-it or loathe-it analysis of design in the wild.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lexistevens.com/insights">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lexi Stevens - Design Insights">
+  <meta name="twitter:description" content="Personal design critiques and real-world design analysis.">
+  <title>Design Insights - Lexi Stevens</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ===================================
+       NAVBAR
+       =================================== -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">LS</a>
+      <button class="menu-toggle">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="insights.html" class="active">Design Insights</a></li>
+        <li><a href="connect.html">Connect</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===================================
+       HERO SECTION
+       =================================== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>
+        Design <span style="color: var(--purple);">Insights</span>
+        <br>
+        <span style="background: radial-gradient(circle at 45% 50%, var(--pink) 0%, var(--pink) 30%, var(--purple) 50%, var(--purple) 55%, var(--orange) 85%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Love it or Loathe it</span>
+      </h1>
+      <p>My personal reddit thread on design in the real world. Honest critiques of products and interfaces I absolutely love—and the ones that make me cringe.</p>
+      <style>
+        .insights-hero-link { color: var(--pink); text-decoration: none; transition: color 0.2s ease; }
+        .insights-hero-link:hover { color: var(--orange); }
+      </style>
+      <div style="display:flex;gap:16px;justify-content:center;align-items:center;margin:24px 0 0 0;">
+        <a href="https://www.linkedin.com/in/lexistevens" class="insights-hero-link">LinkedIn</a>
+        <span style="color:#8a8a8a;">|</span>
+        <a href="https://github.com/lexistevens" class="insights-hero-link">GitHub</a>
+        <span style="color:#8a8a8a;">|</span>
+        <a href="https://copequest.com" class="insights-hero-link">CopeQuest</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================
+       CHAOS BUTTON
+       =================================== -->
+  <div style="text-align: center; margin: 2rem 0 3rem 0;">
+    <button onclick="openChaosModal()" style="background: linear-gradient(135deg, var(--pink), var(--purple), var(--orange)); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Review My Chaos</button>
+  </div>
+
+  <!-- ===================================
+       INSIGHTS FILTER
+       =================================== -->
+  <section>
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <button class="portfolio-filter-btn active" onclick="filterInsights('all')">All Insights</button>
+      <button class="portfolio-filter-btn" onclick="filterInsights('love')">Love It</button>
+      <button class="portfolio-filter-btn" onclick="filterInsights('loathe')">Loathe It</button>
+      <button class="portfolio-filter-btn" onclick="filterInsights('trend')">Trend Analysis</button>
+    </div>
+  </section>
+
+  <!-- ===================================
+       INSIGHT 1: LOVE
+       =================================== -->
+  <section data-category="love" class="insight-item">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 4rem;">
+      <div>
+        <img src="Assets/case-study-1.jpg" alt="Figma Design System" style="width: 100%; border-radius: 12px; border: 2px solid var(--pink);">
+      </div>
+      <div>
+        <h3 style="color: var(--white); margin-bottom: 1rem; font-size: 1.5rem;">Figma's Collaborative Interface</h3>
+        <p style="margin-bottom: 1rem;">This is what collaborative design should look like. The spatial design of the interface, the real-time feedback loops, the way they handle permissions and sharing—it's a masterclass.</p>
+        <h4 style="color: var(--pink); margin-top: 1.5rem; margin-bottom: 0.5rem;">Why I Love It</h4>
+        <p style="margin-bottom: 1rem;">Intentional information hierarchy. Zero cognitive overload. Every pixel serves a purpose. The color-coding system for different editors is subtle but genius.</p>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <span class="portfolio-tag">Interface Design</span>
+          <span class="portfolio-tag">Collaboration</span>
+          <span class="portfolio-tag">UX Excellence</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================
+       INSIGHT 2: LOATHE
+       =================================== -->
+  <section data-category="loathe" class="insight-item">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 4rem;">
+      <div>
+        <img src="Assets/case-study-2.jpg" alt="Cluttered Interface" style="width: 100%; border-radius: 12px; border: 2px solid var(--orange);">
+      </div>
+      <div>
+        <h3 style="color: var(--white); margin-bottom: 1rem; font-size: 1.5rem;">Dashboard Overload Patterns</h3>
+        <p style="margin-bottom: 1rem;">You know the ones. Every metric ever collected, rendered on one screen, with no discernible hierarchy or user goals in sight. Just... chaos.</p>
+        <h4 style="color: var(--orange); margin-top: 1.5rem; margin-bottom: 0.5rem;">Why I Loathe It</h4>
+        <p style="margin-bottom: 1rem;">Zero progressive disclosure. No user research evident. It screams "we had data, so we displayed all of it." Accessibility? Responsiveness? Not in this dashboard.</p>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <span class="portfolio-tag">Anti-Pattern</span>
+          <span class="portfolio-tag">Information Overload</span>
+          <span class="portfolio-tag">UX Failure</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================
+       INSIGHT 3: TREND ANALYSIS
+       =================================== -->
+  <section data-category="trend" class="insight-item">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 4rem;">
+      <div>
+        <img src="Assets/case-study-3.jpg" alt="Minimalist Design Trend" style="width: 100%; border-radius: 12px; border: 2px solid var(--purple);">
+      </div>
+      <div>
+        <h3 style="color: var(--white); margin-bottom: 1rem; font-size: 1.5rem;">The Minimalism Pendulum</h3>
+        <p style="margin-bottom: 1rem;">We swung hard left from skeuomorphism to flat design, and now everything is aggressively minimal. But there's a sweet spot being missed.</p>
+        <h4 style="color: var(--purple); margin-top: 1.5rem; margin-bottom: 0.5rem;">The Insight</h4>
+        <p style="margin-bottom: 1rem;">Minimalism without intentionality is just blank space. The best designs I'm seeing now add *just enough* visual language back in—micro-interactions, subtle depth, personality. It's not about less; it's about *right*.</p>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <span class="portfolio-tag">Design Trend</span>
+          <span class="portfolio-tag">Analysis</span>
+          <span class="portfolio-tag">Pattern Recognition</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================
+       INSIGHT 4: LOVE
+       =================================== -->
+  <section data-category="love" class="insight-item">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 4rem;">
+      <div>
+        <img src="Assets/case-study-1.jpg" alt="Apple Ecosystem" style="width: 100%; border-radius: 12px; border: 2px solid var(--pink);">
+      </div>
+      <div>
+        <h3 style="color: var(--white); margin-bottom: 1rem; font-size: 1.5rem;">Apple's Haptic Feedback Language</h3>
+        <p style="margin-bottom: 1rem;">The way they've standardized haptic feedback across iOS is *chef's kiss*. Every interaction has a consistent, subtle physical response that builds muscle memory without thinking.</p>
+        <h4 style="color: var(--pink); margin-top: 1.5rem; margin-bottom: 0.5rem;">Why I Love It</h4>
+        <p style="margin-bottom: 1rem;">Invisible affordances done right. Users don't consciously notice it, but they *feel* when something is right. That's the ultimate UX win—disappearing into the background because it works so well.</p>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <span class="portfolio-tag">Micro-Interaction</span>
+          <span class="portfolio-tag">Haptic Design</span>
+          <span class="portfolio-tag">Delight</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================
+       CTA SECTION
+       =================================== -->
+  <section style="text-align: center;">
+    <style>
+      .insights-link-bottom { color: var(--orange); text-decoration: none; transition: color 0.2s ease; }
+      .insights-link-bottom:hover { color: var(--purple); }
+      .insights-link-row-bottom { display: flex; gap: 16px; justify-content: center; align-items: center; margin: 24px 0; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+    <div class="insights-link-row-bottom">
+      <a href="https://www.linkedin.com/in/lexistevens" class="insights-link-bottom">LinkedIn</a>
+      <span style="color:#8a8a8a;">|</span>
+      <a href="https://github.com/lexistevens" class="insights-link-bottom">GitHub</a>
+      <span style="color:#8a8a8a;">|</span>
+      <a href="https://copequest.com" class="insights-link-bottom">CopeQuest</a>
+    </div>
+    <h2>Let's Create Something <span>Amazing</span></h2>
+    <p style="margin-bottom: 2rem; font-size: 1.1rem;">Have a design question or want to discuss? Let's talk about what works—and what definitely doesn't.</p>
+    <a href="connect.html" class="btn">Get In Touch</a>
+  </section>
+
+  <!-- ===================================       CHAOS REVIEW MODAL
+       =================================== -->
+  <div id="chaosModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: var(--darker-bg); border: 2px solid var(--pink); border-radius: 12px; padding: 2rem; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="color: var(--white); margin: 0;">Review My Chaos</h2>
+        <button onclick="closeChaosModal()" style="background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer;">×</button>
+      </div>
+      <form id="chaosForm" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="color: var(--white); display: block; margin-bottom: 0.5rem; font-weight: 500;" for="chaosName">Your Name *</label>
+          <input id="chaosName" type="text" name="name" required style="width: 100%; padding: 0.75rem; background: var(--dark-bg); border: 1px solid rgba(217, 70, 166, 0.3); border-radius: 6px; color: var(--white); font-size: 1rem;">
+        </div>
+        <div>
+          <label style="color: var(--white); display: block; margin-bottom: 0.5rem; font-weight: 500;" for="chaosEmail">Your Email *</label>
+          <input id="chaosEmail" type="email" name="email" required style="width: 100%; padding: 0.75rem; background: var(--dark-bg); border: 1px solid rgba(217, 70, 166, 0.3); border-radius: 6px; color: var(--white); font-size: 1rem;">
+        </div>
+        <div>
+          <label style="color: var(--white); display: block; margin-bottom: 0.5rem; font-weight: 500;">What's Off? (Colors, fonts, spacing, etc.) *</label>
+          <textarea name="description" required style="width: 100%; padding: 0.75rem; background: var(--dark-bg); border: 1px solid rgba(217, 70, 166, 0.3); border-radius: 6px; color: var(--white); font-size: 1rem; min-height: 120px; resize: vertical;" placeholder="Omg I hate that this billboard has text thats too small to see while I'm driving am I crazy here?"></textarea>
+        </div>
+        <div>
+          <label style="color: var(--white); display: block; margin-bottom: 0.5rem; font-weight: 500;">Upload Images (2 images) *</label>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <label style="color: #8a8a8a; font-size: 0.9rem;">Photo 1
+              <input type="file" name="image1" accept="image/*" style="padding: 0.75rem; background: var(--dark-bg); border: 1px solid rgba(217, 70, 166, 0.3); border-radius: 6px; color: var(--white); cursor: pointer; width: 100%; margin-top: 0.25rem; display: block;">
+            </label>
+            <label style="color: #8a8a8a; font-size: 0.9rem;">Photo 2
+              <input type="file" name="image2" accept="image/*" style="padding: 0.75rem; background: var(--dark-bg); border: 1px solid rgba(217, 70, 166, 0.3); border-radius: 6px; color: var(--white); cursor: pointer; width: 100%; margin-top: 0.25rem; display: block;">
+            </label>
+          </div>
+          <p style="color: #8a8a8a; font-size: 0.9rem; margin-top: 0.5rem;">JPG, PNG, GIF, WebP</p>
+        </div>
+        <div>
+          <label style="color: var(--white); display: block; margin-bottom: 0.5rem; font-weight: 500;" for="chaosLink">Link to Design/Website</label>
+          <input id="chaosLink" type="url" name="link" style="width: 100%; padding: 0.75rem; background: var(--dark-bg); border: 1px solid rgba(217, 70, 166, 0.3); border-radius: 6px; color: var(--white); font-size: 1rem;" placeholder="https://example.com">
+        </div>
+        <button type="submit" style="background: linear-gradient(135deg, var(--pink), var(--purple), var(--orange)); color: white; border: none; padding: 0.875rem; border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Send Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================       FOOTER
+       =================================== -->
+  <footer style="text-align: center; padding: 2rem; color: #8a8a8a; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+    <p>&copy; 2026 Lexi Stevens. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function filterInsights(category) {
+      const items = document.querySelectorAll('.insight-item');
+      const buttons = document.querySelectorAll('.portfolio-filter-btn');
+
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      items.forEach(item => {
+        if (category === 'all' || item.getAttribute('data-category') === category) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function openChaosModal() {
+      document.getElementById('chaosModal').style.display = 'flex';
+    }
+
+    function closeChaosModal() {
+      document.getElementById('chaosModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('chaosModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeChaosModal();
+      }
+    });
+
+    // Handle form submission
+    document.getElementById('chaosForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const description = formData.get('description');
+      const link = formData.get('link');
+      
+      // Collect image files
+      const images = [];
+      for (let i = 1; i <= 2; i++) {
+        const file = formData.get(`image${i}`);
+        if (file) images.push(file.name);
+      }
+
+      alert(`Thank you, ${name}!\n\nYour chaos review has been submitted.\n\nPlease send the images separately to: loveorloathe@lexistevens.com`);
+      
+      closeChaosModal();
+      this.reset();
+    });
+  </script>
+</body>
+</html>
