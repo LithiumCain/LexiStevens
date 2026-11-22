@@ -48,11 +48,16 @@ document.addEventListener('DOMContentLoaded', function() {
 // Update active nav link based on current page
 function updateActiveNavLink() {
   const navLinks = document.querySelectorAll('.nav-links a');
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const path = window.location.pathname;
+  const currentPage = path.split('/').filter(Boolean).pop() || 'index.html';
+  const onConcierge = path.includes('/concierge');
 
   navLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+    const href = link.getAttribute('href') || '';
+    const isConciergeLink = href.includes('concierge');
+    if (onConcierge) {
+      link.classList.toggle('active', isConciergeLink);
+    } else if (href === currentPage || ((currentPage === 'index.html' || currentPage === '') && href === 'index.html')) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');

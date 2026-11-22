@@ -371,23 +371,36 @@ footer {
    RESPONSIVE DESIGN
    =================================== */
 
+@media (max-width: 1100px) and (min-width: 769px) {
+  .nav-links {
+    gap: 1.15rem;
+  }
+
+  .nav-links a {
+    font-size: 0.88rem;
+  }
+}
+
 @media (max-width: 768px) {
   .nav-links {
     gap: 1rem;
     flex-direction: column;
     position: absolute;
-    top: 70px;
+    top: 100%;
     left: 0;
     right: 0;
     background: var(--dark-bg);
-    padding: 1rem;
+    padding: 0 1rem;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    visibility: hidden;
+    transition: max-height 0.3s ease, visibility 0.3s ease, padding 0.3s ease;
   }
 
   .nav-links.active {
-    max-height: 300px;
+    max-height: 420px;
+    padding: 1rem;
+    visibility: visible;
   }
 
   .menu-toggle {

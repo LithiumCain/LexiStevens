@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9eb4c2"/>
+      <stop offset="38%" stop-color="#7d96a6"/>
+      <stop offset="70%" stop-color="#5d7382"/>
+      <stop offset="100%" stop-color="#46545c"/>
+    </linearGradient>
+    <linearGradient id="goldA" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a07a52" stop-opacity="0"/>
+      <stop offset="35%" stop-color="#d4b07a" stop-opacity="0.7"/>
+      <stop offset="65%" stop-color="#a07a52" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#a07a52" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="goldB" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c4a574" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#e6d3a8" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#a07a52" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <filter id="mist" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <!-- soft watercolor clouds / washes -->
+  <g filter="url(#mist)" opacity="0.55">
+    <ellipse cx="280" cy="140" rx="340" ry="160" fill="#c5d5de"/>
+    <ellipse cx="720" cy="80" rx="300" ry="120" fill="#d7e3ea"/>
+    <ellipse cx="1280" cy="160" rx="380" ry="170" fill="#b7c8d3"/>
+    <ellipse cx="980" cy="220" rx="260" ry="110" fill="#e4eef2" opacity="0.7"/>
+  </g>
+  <!-- distant hills -->
+  <g filter="url(#soft)" opacity="0.85">
+    <path d="M-40,430 C180,360 320,500 520,430 C700,370 820,480 1040,420 C1220,370 1400,460 1660,400 L1660,900 L-40,900 Z" fill="#6d8391"/>
+    <path d="M-40,520 C200,470 360,600 620,530 C860,460 1040,590 1280,520 C1460,470 1580,560 1660,530 L1660,900 L-40,900 Z" fill="#5a6f7c"/>
+    <path d="M-40,620 C260,560 480,700 760,630 C1020,570 1180,710 1420,650 C1540,620 1620,680 1660,660 L1660,900 L-40,900 Z" fill="#4c5d66"/>
+  </g>
+  <!-- foreground slope -->
+  <path d="M-40,720 C300,680 600,800 900,740 C1200,680 1400,800 1660,760 L1660,900 L-40,900 Z" fill="#3f4e56" opacity="0.9"/>
+  <!-- gold foil streaks -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M80,210 C320,170 540,250 820,190 C1080,140 1320,230 1560,170" stroke="url(#goldA)" stroke-width="3"/>
+    <path d="M40,260 C300,300 560,220 860,280 C1140,330 1380,240 1580,290" stroke="url(#goldB)" stroke-width="1.75" opacity="0.85"/>
+    <path d="M120,470 C400,430 700,520 980,450 C1220,400 1440,490 1600,450" stroke="url(#goldA)" stroke-width="2.25" opacity="0.7"/>
+    <path d="M-20,580 C260,540 520,620 820,560 C1100,510 1340,600 1620,540" stroke="url(#goldB)" stroke-width="1.5" opacity="0.65"/>
+    <path d="M200,140 C460,100 720,180 1000,120" stroke="url(#goldB)" stroke-width="1.25" opacity="0.5"/>
+  </g>
+  <!-- faint speckled gold dust -->
+  <g fill="#d4b07a" opacity="0.35">
+    <circle cx="240" cy="200" r="1.4"/>
+    <circle cx="510" cy="160" r="1"/>
+    <circle cx="890" cy="210" r="1.3"/>
+    <circle cx="1170" cy="130" r="1.1"/>
+    <circle cx="1410" cy="240" r="1.5"/>
+    <circle cx="680" cy="430" r="1.2"/>
+    <circle cx="1020" cy="500" r="1"/>
+    <circle cx="330" cy="500" r="1.1"/>
+    <circle cx="1500" cy="400" r="1.2"/>
+  </g>
+</svg>
