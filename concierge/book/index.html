@@ -102,15 +102,15 @@
       <div class="book-hero-art" aria-hidden="true"></div>
       <div class="book-hero-inner">
         <p class="book-mark">ZLS</p>
-        <h1 class="book-title">Request a ride</h1>
+        <h1 class="book-title">Reserve your ride</h1>
         <p class="zls-script book-script">private driver &amp; personal concierge</p>
         <p class="book-rates">$119/hour · 30-minute minimum · Night out / DD: $600 for 6 hours or $950 for 10 hours · $1/mi after 20 from The Domain</p>
         <button type="button" class="voice-btn" id="voice-btn" hidden>
           <span class="voice-icon" aria-hidden="true"></span>
-          <span class="voice-btn-label">Tell me the trip</span>
+          <span class="voice-btn-label">Tell me about your trip</span>
         </button>
         <p class="voice-status" id="voice-status" role="status" aria-live="polite"></p>
-        <p class="book-fine">No account needed. This is an estimate, confirmed by text. A booking is confirmed when I text you back.</p>
+        <p class="book-fine">No account needed. Your estimate updates as you go, and I confirm every detail personally by text. Your ride is reserved when I text you back.</p>
       </div>
     </header>
 
@@ -119,17 +119,17 @@
         <ol class="stepper" aria-label="Booking steps">
           <li class="stepper-item is-current" data-step-dot="1"><button type="button" class="stepper-btn" data-goto="1"><span>1</span> Where</button></li>
           <li class="stepper-item" data-step-dot="2"><button type="button" class="stepper-btn" data-goto="2"><span>2</span> When</button></li>
-          <li class="stepper-item" data-step-dot="3"><button type="button" class="stepper-btn" data-goto="3"><span>3</span> Riders</button></li>
+          <li class="stepper-item" data-step-dot="3"><button type="button" class="stepper-btn" data-goto="3"><span>3</span> Who</button></li>
           <li class="stepper-item" data-step-dot="4"><button type="button" class="stepper-btn" data-goto="4"><span>4</span> Review</button></li>
         </ol>
 
         <section class="book-step" data-step="1" aria-labelledby="step-1-title">
-          <h2 class="step-title" tabindex="-1" id="step-1-title">Where are we going?</h2>
-          <p class="step-lead">Pickup is required. Miles are measured from The Domain — the first 20 are included.</p>
+          <h2 class="step-title" tabindex="-1" id="step-1-title">Where can I take you?</h2>
+          <p class="step-lead">Start with your pickup. The first 20 miles from The Domain are included.</p>
 
           <fieldset class="package-set">
-            <legend>Need me for a night out? Need a DD?</legend>
-            <p class="field-hint">Hourly at $119, or a flat block for a party of up to four. $1/mile after 20 from The Domain still applies. The 15% repeating discount does not apply to packages.</p>
+            <legend>Planning a night out?</legend>
+            <p class="field-hint">Book by the hour at $119, or reserve a flat block for a party of up to four. $1/mile beyond 20 from The Domain still applies; the 15% repeating discount doesn&rsquo;t apply to packages.</p>
             <div class="package-grid" role="radiogroup" aria-label="Booking type">
               <label class="package-opt">
                 <input type="radio" name="package" value="" checked>
@@ -139,39 +139,39 @@
               </label>
               <label class="package-opt">
                 <input type="radio" name="package" value="6h">
-                <span class="pkg-name">6-hour night out</span>
+                <span class="pkg-name">The Evening · 6 hours</span>
                 <span class="pkg-price">$600</span>
-                <span class="pkg-note">Flat block, up to 4 riders</span>
+                <span class="pkg-note">Flat rate, up to 4 riders</span>
               </label>
               <label class="package-opt">
                 <input type="radio" name="package" value="10h">
-                <span class="pkg-name">10-hour night out</span>
+                <span class="pkg-name">The Full Night · 10 hours</span>
                 <span class="pkg-price">$950</span>
-                <span class="pkg-note">Flat block, up to 4 riders</span>
+                <span class="pkg-note">Flat rate, up to 4 riders</span>
               </label>
             </div>
           </fieldset>
 
           <div class="field" data-autocomplete="pickup">
-            <label for="pickup">Pickup address</label>
+            <label for="pickup">Where should I pick you up?</label>
             <input id="pickup" name="pickup" type="text" autocomplete="street-address" enterkeyhint="next" required placeholder="Street address or place name" aria-autocomplete="list" aria-controls="pickup-list" aria-expanded="false" role="combobox">
             <ul class="suggest" id="pickup-list" role="listbox" hidden></ul>
-            <p class="aus-notice" id="aus-notice" role="alert" hidden>Airport pickups at AUS are coming soon. Drop-offs are available now.</p>
+            <p class="aus-notice" id="aus-notice" role="alert" hidden>AUS drop-offs are available now. Airport pickups are coming soon.</p>
           </div>
 
           <div class="field" data-autocomplete="dropoff">
-            <label for="dropoff">Dropoff address</label>
-            <input id="dropoff" name="dropoff" type="text" autocomplete="off" enterkeyhint="next" placeholder="Where should I take you?" aria-autocomplete="list" aria-controls="dropoff-list" aria-expanded="false" role="combobox">
+            <label for="dropoff">Where to?</label>
+            <input id="dropoff" name="dropoff" type="text" autocomplete="off" enterkeyhint="next" placeholder="An address, a venue, or AUS" aria-autocomplete="list" aria-controls="dropoff-list" aria-expanded="false" role="combobox">
             <ul class="suggest" id="dropoff-list" role="listbox" hidden></ul>
           </div>
 
           <div class="field">
-            <label for="stops">Want to make a stop? Type your request here</label>
+            <label for="stops">A stop along the way? <span class="optional">(optional)</span></label>
             <textarea id="stops" name="stops" rows="2" maxlength="400" placeholder="A coffee run, a second address, a quick pickup…"></textarea>
           </div>
 
           <div class="manual-box" id="manual-outbound">
-            <button type="button" class="link-btn" id="toggle-manual-out" aria-expanded="false">Enter time and mileage yourself</button>
+            <button type="button" class="link-btn" id="toggle-manual-out" aria-expanded="false">Prefer to estimate time and miles yourself?</button>
             <div class="manual-fields" id="manual-out-fields" hidden>
               <p class="field-hint">Used if mapping is unavailable, or if you’d rather estimate. Still confirmed by text.</p>
               <div class="field-row">
@@ -194,7 +194,7 @@
 
         <section class="book-step" data-step="2" hidden aria-labelledby="step-2-title">
           <h2 class="step-title" tabindex="-1" id="step-2-title">When should I be there?</h2>
-          <p class="step-lead">Choose a pickup date and time. For hourly rides, you can add a return trip or a repeating series.</p>
+          <p class="step-lead">Choose a date and time, and I&rsquo;ll be waiting. Hourly rides can include a ride back or become a standing reservation.</p>
 
           <div class="field-row">
             <div class="field">
@@ -209,7 +209,7 @@
 
           <div id="hourly-extras">
           <fieldset class="toggle-set">
-            <legend>Return trip?</legend>
+            <legend>Need a ride back?</legend>
             <div class="segment" role="radiogroup" aria-label="Return trip">
               <label class="segment-opt"><input type="radio" name="hasReturn" value="no" checked> No</label>
               <label class="segment-opt"><input type="radio" name="hasReturn" value="yes"> Yes</label>
@@ -217,7 +217,7 @@
           </fieldset>
 
           <div id="return-fields" class="subcard" hidden>
-            <p class="field-hint">The return is quoted as its own leg with the same rates. Return pickup defaults to your dropoff.</p>
+            <p class="field-hint">The ride back is quoted as its own leg at the same rates. I&rsquo;ll assume I&rsquo;m picking you up where I dropped you off.</p>
             <div class="field-row">
               <div class="field">
                 <label for="returnDate">Return pickup date</label>
@@ -260,10 +260,10 @@
           </div>
 
           <fieldset class="toggle-set">
-            <legend>Repeat it?</legend>
+            <legend>Make it a standing reservation?</legend>
             <div class="segment" role="radiogroup" aria-label="Repeating series">
               <label class="segment-opt"><input type="radio" name="recurring" value="no" checked> One-time</label>
-              <label class="segment-opt"><input type="radio" name="recurring" value="yes"> Repeating series, 15% off</label>
+              <label class="segment-opt"><input type="radio" name="recurring" value="yes"> Repeating series · 15% off</label>
             </div>
           </fieldset>
 
@@ -297,8 +297,8 @@
         </section>
 
         <section class="book-step" data-step="3" hidden aria-labelledby="step-3-title">
-          <h2 class="step-title" tabindex="-1" id="step-3-title">Riders and payment</h2>
-          <p class="step-lead">I’ll use this to confirm by text. The vehicle seats up to four comfortably. Night-out packages are for a party of up to four.</p>
+          <h2 class="step-title" tabindex="-1" id="step-3-title">Who&rsquo;s riding?</h2>
+          <p class="step-lead">This helps me confirm by text and have everything ready. The Tiguan seats up to four in comfort, and night-out packages are for a party of up to four.</p>
 
           <div class="field">
             <label for="name">Your name</label>
@@ -306,7 +306,7 @@
           </div>
           <div class="field-row">
             <div class="field">
-              <label for="phone">Phone</label>
+              <label for="phone">Mobile number <span class="optional">(for my confirmation text)</span></label>
               <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required enterkeyhint="next" placeholder="512.555.0100">
             </div>
             <div class="field">
@@ -320,41 +320,47 @@
               <input id="pax" name="pax" type="number" inputmode="numeric" min="1" max="6" step="1" value="1" required>
             </div>
             <div class="field">
-              <label for="bags">Number of bags</label>
+              <label for="bags">Bags <span class="optional">(I&rsquo;ll handle them)</span></label>
               <input id="bags" name="bags" type="number" inputmode="numeric" min="0" max="12" step="1" value="0">
             </div>
           </div>
           <label class="check-row" for="pet">
             <input id="pet" name="pet" type="checkbox" value="1">
-            <span>Have a pet or service dog? Check here</span>
+            <span>Bringing a pet or service dog? They&rsquo;re welcome.</span>
           </label>
 
           <fieldset class="pay-set">
-            <legend>Preferred payment method</legend>
-            <p class="field-hint" id="pay-note">Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. A $50 deposit is arranged by text after you send the request.</p>
+            <legend>How would you like to pay?</legend>
+            <p class="field-hint" id="pay-note">Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be settled during the ride. A $50 deposit holds your time, arranged by text after you send your request.</p>
             <div class="pay-grid" id="pay-grid"></div>
             <div class="pay-handles" id="pay-handles" hidden></div>
           </fieldset>
 
           <div class="field">
-            <label for="notes">Notes <span class="optional">(optional)</span></label>
-            <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Gate codes, child seats, flight numbers…"></textarea>
+            <label for="notes">Anything I should know? <span class="optional">(optional)</span></label>
+            <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Gate codes, flight numbers, a towel for the lake…"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="prefs">Your perfect ride <span class="optional">(optional)</span></label>
+            <p class="field-hint" id="prefs-hint">Favorite snack, music, chat level. (Country and peanut M&amp;Ms? Say less.)</p>
+            <textarea id="prefs" name="prefs" rows="2" maxlength="300" aria-describedby="prefs-hint"></textarea>
           </div>
         </section>
 
         <section class="book-step" data-step="4" hidden aria-labelledby="step-4-title">
-          <h2 class="step-title" tabindex="-1" id="step-4-title">Review and send</h2>
-          <p class="step-lead">Check the details, then text me the request. I’ll confirm by text. Until then, this is only a request.</p>
+          <h2 class="step-title" tabindex="-1" id="step-4-title">One last look</h2>
+          <p class="step-lead">Look everything over, then text me your request. It becomes a reservation the moment I text you back.</p>
           <div class="review-card" id="review-card"></div>
           <label class="check-row" for="policy-agree">
             <input id="policy-agree" name="policyAgree" type="checkbox" value="yes" required>
-            <span>I agree to the <a href="/concierge/policy/" id="policy-link">rider policy</a></span>
+            <span>I&rsquo;ve read and agree to the <a href="/concierge/policy/" id="policy-link">rider policy</a></span>
           </label>
           <div class="handoff" id="handoff">
-            <a class="zls-btn zls-btn-gold book-primary" id="sms-btn" href="sms:+15125341855">Text this request</a>
-            <a class="zls-btn zls-btn-ghost" id="tel-btn" href="tel:+15125341855">Call 512.534.1855</a>
-            <button type="button" class="zls-btn zls-btn-ghost" id="copy-btn">Copy details</button>
-            <a class="zls-btn zls-btn-gold" id="pay-btn" hidden>Pay the $50 deposit</a>
+            <a class="zls-btn zls-btn-gold book-primary" id="sms-btn" href="sms:+15125341855">Send my request by text</a>
+            <a class="zls-btn zls-btn-ghost" id="tel-btn" href="tel:+15125341855">Prefer to call? 512.534.1855</a>
+            <button type="button" class="zls-btn zls-btn-ghost" id="copy-btn">Copy my trip details</button>
+            <a class="zls-btn zls-btn-gold" id="pay-btn" hidden>Hold my ride · $50 deposit</a>
           </div>
           <p class="copy-status" id="copy-status" role="status"></p>
           <p class="book-fine">Quotes are estimates, confirmed by text. A $50 deposit is arranged by text after this request. A booking is confirmed when I text you back.</p>
@@ -369,12 +375,12 @@
       </form>
 
       <aside class="quote-panel" id="quote-panel" aria-live="polite" aria-atomic="true">
-        <p class="zls-eyebrow">Estimate</p>
+        <p class="zls-eyebrow">Your estimate</p>
         <p class="quote-total" id="quote-total">—</p>
         <div class="quote-lines" id="quote-lines">
-          <p>Add a pickup and a time to see a live quote.</p>
+          <p>Add a pickup and a time, and your quote will appear here.</p>
         </div>
-        <p class="book-fine">Estimate, confirmed by text. $50 deposit arranged by text after you send the request.</p>
+        <p class="book-fine">An estimate, confirmed personally by text. A $50 deposit holds your time, arranged after you send your request.</p>
       </aside>
     </div>
   </main>
@@ -382,7 +388,7 @@
   <div class="sticky-bar" id="sticky-bar">
     <div class="sticky-inner">
       <div>
-        <p class="sticky-label">Estimate</p>
+        <p class="sticky-label">Your estimate</p>
         <p class="sticky-total" id="sticky-total">—</p>
       </div>
       <button type="button" class="zls-btn zls-btn-gold" id="sticky-btn">Continue</button>

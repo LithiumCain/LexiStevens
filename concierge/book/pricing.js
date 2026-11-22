@@ -78,7 +78,7 @@
       lng: -97.6664,
       pickupRadiusMiles: 1.5,
       pickupsEnabled: false,
-      pickupNotice: "Airport pickups at AUS are coming soon. Drop-offs are available now.",
+      pickupNotice: "AUS drop-offs are available now. Airport pickups are coming soon.",
     },
   };
 

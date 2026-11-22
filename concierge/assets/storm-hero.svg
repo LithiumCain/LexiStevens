@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d3dce3"/>
+      <stop offset=".22" stop-color="#b9c6d0"/>
+      <stop offset=".4" stop-color="#aab8c4"/>
+    </linearGradient>
+    <linearGradient id="b1" x1="0" y1="0" x2="1" y2=".4"><stop offset="0" stop-color="#93a6b5"/><stop offset=".5" stop-color="#a3b3c0"/><stop offset="1" stop-color="#8599a9"/></linearGradient>
+    <linearGradient id="b2" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="#5b7489"/><stop offset=".55" stop-color="#6c8397"/><stop offset="1" stop-color="#4f687d"/></linearGradient>
+    <linearGradient id="b3" x1="0" y1="0" x2="1" y2=".5"><stop offset="0" stop-color="#3d5a75"/><stop offset=".5" stop-color="#34506a"/><stop offset="1" stop-color="#2c465e"/></linearGradient>
+    <linearGradient id="b4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2b3640"/><stop offset=".45" stop-color="#34424e"/><stop offset="1" stop-color="#28333d"/></linearGradient>
+    <linearGradient id="b5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#243649"/><stop offset="1" stop-color="#1a2837"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a07a52" stop-opacity="0"/>
+      <stop offset=".12" stop-color="#d8b56a"/>
+      <stop offset=".34" stop-color="#a07a52"/>
+      <stop offset=".46" stop-color="#f1d999"/>
+      <stop offset=".52" stop-color="#d8b56a" stop-opacity=".25"/>
+      <stop offset=".6" stop-color="#d8b56a"/>
+      <stop offset=".78" stop-color="#f1d999"/>
+      <stop offset=".9" stop-color="#a07a52"/>
+      <stop offset="1" stop-color="#d8b56a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gold2" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#f1d999" stop-opacity="0"/>
+      <stop offset=".2" stop-color="#f1d999"/>
+      <stop offset=".4" stop-color="#a07a52" stop-opacity=".2"/>
+      <stop offset=".55" stop-color="#d8b56a"/>
+      <stop offset=".8" stop-color="#a07a52"/>
+      <stop offset="1" stop-color="#a07a52" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="marble" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0022 0.011" numOctaves="3" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wash" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="22"/></filter>
+    <filter id="paper" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="3"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .16 -.03"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <filter id="streak" x="-5%" y="-20%" width="110%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0015 0.06" numOctaves="2" seed="11"/>
+      <feColorMatrix values="0 0 0 0 .86  0 0 0 0 .9  0 0 0 0 .94  0 0 0 1.4 -.72"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <g filter="url(#wash)" opacity=".7">
+    <ellipse cx="300" cy="120" rx="380" ry="120" fill="#e6edf1"/>
+    <ellipse cx="1250" cy="170" rx="420" ry="130" fill="#dfe7ec"/>
+    <ellipse cx="820" cy="250" rx="300" ry="70" fill="#9fb0be"/>
+  </g>
+  <g filter="url(#marble)">
+    <path d="M-60,300 C160,250 330,350 560,300 C780,252 930,330 1140,286 C1330,248 1480,320 1660,282 V1060 H-60Z" fill="url(#b1)"/>
+    <path d="M-60,420 C190,380 380,470 640,416 C860,372 1020,452 1240,408 C1420,374 1540,430 1660,404 V1060 H-60Z" fill="url(#b2)"/>
+    <path d="M-60,560 C220,510 420,610 700,552 C940,504 1120,600 1360,548 C1500,520 1580,560 1660,544 V1060 H-60Z" fill="url(#b3)"/>
+    <path d="M-60,690 C200,650 460,740 760,684 C1000,640 1200,730 1440,680 C1540,660 1600,690 1660,676 V1060 H-60Z" fill="url(#b4)"/>
+    <path d="M-60,820 C260,780 520,860 820,810 C1080,770 1300,850 1660,800 V1060 H-60Z" fill="url(#b5)"/>
+    <g filter="url(#wash)">
+      <ellipse cx="420" cy="360" rx="260" ry="34" fill="#c3cfd8" opacity=".45"/>
+      <ellipse cx="1180" cy="470" rx="320" ry="40" fill="#7f95a8" opacity=".5"/>
+      <ellipse cx="360" cy="620" rx="300" ry="46" fill="#4a6884" opacity=".6"/>
+      <ellipse cx="1220" cy="740" rx="280" ry="40" fill="#1f2f40" opacity=".55"/>
+      <ellipse cx="600" cy="900" rx="420" ry="60" fill="#2f4458" opacity=".6"/>
+    </g>
+    <g fill="none" stroke-linecap="round">
+      <path d="M-60,300 C160,250 330,350 560,300 C780,252 930,330 1140,286 C1330,248 1480,320 1660,282" stroke="url(#gold)" stroke-width="4"/>
+      <path d="M-60,312 C200,280 360,352 600,312 C820,276 980,336 1200,300" stroke="url(#gold2)" stroke-width="1" opacity=".7"/>
+      <path d="M-60,420 C190,380 380,470 640,416 C860,372 1020,452 1240,408 C1420,374 1540,430 1660,404" stroke="url(#gold2)" stroke-width="3"/>
+      <path d="M-60,560 C220,510 420,610 700,552 C940,504 1120,600 1360,548 C1500,520 1580,560 1660,544" stroke="url(#gold)" stroke-width="5"/>
+      <path d="M300,574 C520,600 760,548 1000,580 C1180,602 1340,566 1500,578" stroke="url(#gold)" stroke-width="1" opacity=".55"/>
+      <path d="M-60,690 C200,650 460,740 760,684 C1000,640 1200,730 1440,680 C1540,660 1600,690 1660,676" stroke="url(#gold2)" stroke-width="3.2"/>
+      <path d="M-60,820 C260,780 520,860 820,810 C1080,770 1300,850 1660,800" stroke="url(#gold)" stroke-width="2.4" opacity=".85"/>
+      <path d="M-60,742 C260,724 520,770 820,738 C1060,712 1300,760 1660,730" stroke="url(#gold2)" stroke-width="1.2" opacity=".6"/>
+      <path d="M200,470 C420,452 640,490 900,466 C1100,448 1300,480 1500,462" stroke="url(#gold)" stroke-width="1.2" opacity=".5"/>
+    </g>
+  </g>
+  <rect width="1600" height="1000" fill="#fff" filter="url(#streak)" opacity=".35"/>
+  <rect width="1600" height="1000" fill="#fff" filter="url(#paper)"/>
+</svg>

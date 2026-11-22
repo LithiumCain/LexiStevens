@@ -758,3 +758,204 @@ fieldset legend {
   line-height: 1.55;
   font-weight: 300;
 }
+
+/* =====================================================
+   STORM LAYERS — booking page skin (visual only)
+   ===================================================== */
+
+.page-book {
+  --zls-bronze-light: #dcc08a;
+  --zls-slate-mid: rgba(27, 42, 58, 0.78);
+  --zls-slate-deep: rgba(18, 30, 43, 0.72);
+}
+
+.book-hero {
+  overflow: visible;
+  isolation: isolate;
+  border-bottom: 0;
+  padding-bottom: calc(1.5rem + 56px);
+}
+
+.book-hero-art {
+  left: 50%;
+  right: auto;
+  width: 100vw;
+  margin-left: -50vw;
+  background-image: url("../assets/storm-hero.svg");
+  background-position: center 46%;
+  -webkit-mask:
+    linear-gradient(#000, #000) top / 100% calc(100% - 55px) no-repeat,
+    url("../assets/edge-top.svg") bottom / 100% 56px no-repeat;
+  mask:
+    linear-gradient(#000, #000) top / 100% calc(100% - 55px) no-repeat,
+    url("../assets/edge-top.svg") bottom / 100% 56px no-repeat;
+}
+
+.book-hero-art::after {
+  background: linear-gradient(180deg, rgba(26, 40, 55, 0.25) 0%, rgba(26, 40, 55, 0.45) 40%, rgba(26, 40, 55, 0.8) 100%);
+}
+
+.book-hero::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  bottom: 0;
+  height: 56px;
+  pointer-events: none;
+  background: url("../assets/vein-a.svg") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 0 3px rgba(241, 217, 153, 0.35));
+}
+
+.book-mark {
+  display: inline-block;
+  background: linear-gradient(160deg, #ffffff 0%, #f6f1ea 100%);
+  border: 1px solid #a07a52;
+  box-shadow: inset 0 0 0 3px #fff, inset 0 0 0 4px rgba(160, 122, 82, 0.4), 0 10px 24px -10px rgba(10, 18, 28, 0.7);
+  color: #84623f;
+  padding: 0.45rem 0.55rem 0.4rem 0.95rem;
+  margin-bottom: 0.85rem;
+}
+
+.book-title,
+.book-script,
+.book-rates,
+.book-fine {
+  text-shadow: 0 2px 12px rgba(15, 25, 36, 0.75);
+}
+
+.book-rates,
+.book-fine {
+  color: #efe9e0;
+}
+
+.voice-btn {
+  background: rgba(20, 32, 45, 0.55);
+  border-color: rgba(220, 192, 138, 0.8);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+/* the form sits on a translucent deep-blue sheet */
+.book-form,
+.quote-panel {
+  background:
+    linear-gradient(90deg, #d8b56a 0%, #a07a52 45%, #f1d999 78%, #d8b56a 100%) top / 100% 1px no-repeat,
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(170, 184, 196, 0.08), transparent 70%),
+    linear-gradient(165deg, rgba(31, 47, 64, 0.8) 0%, rgba(24, 37, 51, 0.68) 100%);
+  border: 1px solid rgba(216, 181, 106, 0.3);
+  border-top: 1px solid transparent;
+  border-radius: 6px;
+  box-shadow: 0 26px 50px -28px rgba(5, 12, 22, 0.9), 0 2px 8px rgba(5, 12, 22, 0.25);
+}
+
+.book-form {
+  padding: 1.15rem 1rem 1.25rem;
+}
+
+.review-card,
+.subcard {
+  background:
+    linear-gradient(90deg, #d8b56a, #a07a52 45%, #f1d999 78%, #d8b56a) top / 100% 1px no-repeat,
+    rgba(18, 30, 43, 0.62);
+  border: 1px solid rgba(216, 181, 106, 0.28);
+  border-top: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.field input,
+.field textarea,
+.field select {
+  background: rgba(14, 24, 35, 0.55);
+  border: 1px solid rgba(216, 181, 106, 0.3);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(5, 12, 22, 0.35);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.field select option {
+  background: #1f2f40;
+  color: #f4efe8;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: #d8b56a;
+  box-shadow: inset 0 1px 3px rgba(5, 12, 22, 0.35), 0 0 0 3px rgba(216, 181, 106, 0.16);
+}
+
+.package-opt,
+.check-row,
+.segment-opt,
+.pay-opt,
+.dow {
+  border-color: rgba(216, 181, 106, 0.3);
+  border-radius: 4px;
+  background: linear-gradient(160deg, rgba(36, 54, 73, 0.75) 0%, rgba(24, 37, 51, 0.7) 100%);
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.package-opt:has(input:checked),
+.segment-opt:has(input:checked),
+.pay-opt:has(input:checked) {
+  border-color: #d8b56a;
+  background: linear-gradient(160deg, rgba(160, 122, 82, 0.34) 0%, rgba(52, 80, 106, 0.55) 100%);
+  box-shadow: inset 0 0 0 1px #d8b56a, 0 10px 24px -14px rgba(216, 181, 106, 0.5);
+}
+
+.dow:has(input:checked) {
+  background: linear-gradient(135deg, #e2c27c, #c49a5e 55%, #efd89a);
+  border-color: #f1d999;
+  color: #16212c;
+}
+
+.stepper-btn span {
+  border-color: rgba(216, 181, 106, 0.6);
+}
+
+.stepper-item.is-current .stepper-btn span,
+.stepper-item.is-done .stepper-btn span {
+  background: linear-gradient(135deg, #e2c27c, #c49a5e 55%, #efd89a);
+  border-color: #f1d999;
+  color: #16212c;
+}
+
+.aus-notice {
+  border-left: 0;
+  background:
+    linear-gradient(180deg, #f1d999, #a07a52 60%, #d8b56a) left / 2px 100% no-repeat,
+    rgba(160, 122, 82, 0.14);
+}
+
+.sticky-bar {
+  background:
+    linear-gradient(90deg, #d8b56a 0%, #a07a52 45%, #f1d999 78%, #d8b56a 100%) top / 100% 1px no-repeat,
+    linear-gradient(180deg, rgba(31, 47, 64, 0.96) 0%, rgba(22, 35, 48, 0.98) 100%);
+  border-top: 0;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 -12px 30px -12px rgba(5, 12, 22, 0.8);
+}
+
+@media (min-width: 900px) {
+  .book-hero {
+    padding-bottom: calc(2rem + 72px);
+  }
+  .book-hero-art {
+    -webkit-mask:
+      linear-gradient(#000, #000) top / 100% calc(100% - 71px) no-repeat,
+      url("../assets/edge-top.svg") bottom / 100% 72px no-repeat;
+    mask:
+      linear-gradient(#000, #000) top / 100% calc(100% - 71px) no-repeat,
+      url("../assets/edge-top.svg") bottom / 100% 72px no-repeat;
+  }
+  .book-hero::after {
+    height: 72px;
+  }
+  .book-form {
+    padding: 1.6rem 1.75rem 1.75rem;
+  }
+}

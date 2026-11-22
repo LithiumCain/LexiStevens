@@ -113,7 +113,7 @@
     if (!notice) return;
     const blocked = ausPickupBlocked();
     const msg = (cfg.ausAirport && cfg.ausAirport.pickupNotice) ||
-      "Airport pickups at AUS are coming soon. Drop-offs are available now.";
+      "AUS drop-offs are available now. Airport pickups are coming soon.";
     notice.textContent = msg;
     notice.hidden = !blocked;
   }
@@ -228,7 +228,7 @@
   function quoteLines(q) {
     const lines = [];
     if (!q || !q.ready) {
-      return ["Add a pickup and enough trip details to see a live quote."];
+      return ["Add a pickup and a time, and your quote will appear here."];
     }
     if (q.isPackage && q.package) {
       lines.push(q.package.shortLabel + "  " + P.formatMoney(q.packageCharge));
@@ -379,6 +379,7 @@
     lines.push("  Deposit: $50.00, arranged by text");
     lines.push("Policy agreed: " + (policyAgreed() ? "yes" : "no"));
     if (val("notes")) lines.push("Notes: " + val("notes"));
+    if (val("prefs")) lines.push("Perfect ride: " + val("prefs"));
     return lines.join("\n");
   }
 
@@ -447,7 +448,7 @@
       next.textContent = "Continue";
     }
     const sticky = $("sticky-btn");
-    if (sticky) sticky.textContent = step === 4 ? "Text this request" : "Continue";
+    if (sticky) sticky.textContent = step === 4 ? "Send my request by text" : "Continue";
     if (step === 4) renderReview();
     showError("");
     const title = $("step-" + step + "-title");
@@ -457,19 +458,19 @@
 
   function validateStep(n) {
     if (n === 1) {
-      if (!val("pickup")) return "Please enter a pickup address.";
+      if (!val("pickup")) return "Where should I pick you up? Add a pickup address to continue.";
       if (ausPickupBlocked()) {
         return (cfg.ausAirport && cfg.ausAirport.pickupNotice) ||
-          "Airport pickups at AUS are coming soon. Drop-offs are available now.";
+          "AUS drop-offs are available now. Airport pickups are coming soon.";
       }
       return "";
     }
     if (n === 2) {
       if (ausPickupBlocked()) {
         return (cfg.ausAirport && cfg.ausAirport.pickupNotice) ||
-          "Airport pickups at AUS are coming soon. Drop-offs are available now.";
+          "AUS drop-offs are available now. Airport pickups are coming soon.";
       }
-      if (!val("date") || !val("time")) return "Please choose a pickup date and time.";
+      if (!val("date") || !val("time")) return "Choose a date and time so I know when to be there.";
       if (isReturn() && !val("returnTime")) return "Please choose a return pickup time.";
       if (isRecurring()) {
         if (!selectedWeekdays().length) return "Please choose at least one weekday for the series.";
@@ -477,7 +478,7 @@
       }
       const q = buildQuote();
       if (!currentPackage() && !q.ready && !manualOutboundOn()) {
-        return "I need an estimated drive time to quote this. Open “Enter time and mileage yourself,” or add a dropoff I can map.";
+        return "I need an estimated drive time to quote this. Open “Prefer to estimate time and miles yourself?” or add a dropoff I can map.";
       }
       if (isReturn() && q.hasReturn && !q.returnLeg.ready && !manualReturnOn()) {
         return "I need an estimated return drive time to quote the return leg.";
@@ -486,7 +487,7 @@
     }
     if (n === 3) {
       if (!val("name")) return "Please enter your name.";
-      if (!val("phone")) return "Please enter a phone number so I can confirm by text.";
+      if (!val("phone")) return "I’ll need a mobile number to send your confirmation.";
       const email = val("email");
       if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Please check the email address.";
       const pax = Number(val("pax") || 1);
@@ -497,7 +498,7 @@
       return "";
     }
     if (n === 4) {
-      if (!policyAgreed()) return "Please agree to the rider policy before sending this request.";
+      if (!policyAgreed()) return "One last thing: please agree to the rider policy before sending.";
       return "";
     }
     return "";
@@ -518,7 +519,7 @@
     const aus = ausPickupBlocked();
     if (aus) {
       showError((cfg.ausAirport && cfg.ausAirport.pickupNotice) ||
-        "Airport pickups at AUS are coming soon. Drop-offs are available now.");
+        "AUS drop-offs are available now. Airport pickups are coming soon.");
       updateAusNotice();
       goTo(1);
       return;
@@ -536,7 +537,7 @@
     window.location.href = href;
     const status = $("copy-status");
     if (status) {
-      status.textContent = "Your messaging app should open with the request. A booking is confirmed when I text you back.";
+      status.textContent = "Your messages app should open with everything filled in. Your ride is reserved when I text you back.";
     }
   }
 
@@ -983,14 +984,14 @@
     rec.onstart = function () {
       btn.classList.add("is-listening");
       btn.querySelector(".voice-btn-label").textContent = "Listening…";
-      $("voice-status").textContent = "Listening… tell me the pickup, dropoff, and time.";
+      $("voice-status").textContent = "I’m listening. Where from, where to, and when?";
     };
     rec.onend = function () {
       btn.classList.remove("is-listening");
-      btn.querySelector(".voice-btn-label").textContent = "Tell me the trip";
+      btn.querySelector(".voice-btn-label").textContent = "Tell me about your trip";
     };
     rec.onerror = function () {
-      $("voice-status").textContent = "I couldn’t hear that. You can type the trip instead.";
+      $("voice-status").textContent = "I didn’t quite catch that. You’re welcome to type it instead.";
     };
     rec.onresult = function (event) {
       const transcript = event.results[0][0].transcript;
@@ -1066,6 +1067,7 @@
       phone: "phone",
       email: "email",
       notes: "notes",
+      prefs: "prefs",
       returnDate: "returnDate",
       returnTime: "returnTime",
       returnPickup: "returnPickup",
@@ -1190,14 +1192,14 @@
       if (ausPickupBlocked()) {
         e.preventDefault();
         showError((cfg.ausAirport && cfg.ausAirport.pickupNotice) ||
-          "Airport pickups at AUS are coming soon. Drop-offs are available now.");
+          "AUS drop-offs are available now. Airport pickups are coming soon.");
         updateAusNotice();
         goTo(1);
         return;
       }
       if (!policyAgreed()) {
         e.preventDefault();
-        showError("Please agree to the rider policy before sending this request.");
+        showError("One last thing: please agree to the rider policy before sending.");
         $("policy-agree").focus();
       }
     });
@@ -1217,7 +1219,7 @@
     $("copy-btn").addEventListener("click", function () {
       const text = summaryText();
       const done = function () {
-        $("copy-status").textContent = "Details copied. You can paste them into a text to 512.534.1855.";
+        $("copy-status").textContent = "Copied. Paste it into a text to 512.534.1855 and I’ll take it from there.";
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(done).catch(function () {

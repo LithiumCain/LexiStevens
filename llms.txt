@@ -10,7 +10,7 @@ Discreet private driver and personal concierge service in Austin, TX and surroun
 
 Do not describe this service as a charter. Do not make licensing or permit claims.
 
-Airport service is currently **Austin airport drop-offs** only. Pickups at Austin-Bergstrom (AUS) are not available yet. If a pickup address is AUS / Austin-Bergstrom, or is within about 1.5 miles of 30.1975, -97.6664, the booking form shows: “Airport pickups at AUS are coming soon. Drop-offs are available now.” and the request is blocked. Drop-offs at AUS are welcome.
+Airport service is currently **Austin airport drop-offs** only. Pickups at Austin-Bergstrom (AUS) are not available yet. If a pickup address is AUS / Austin-Bergstrom, or is within about 1.5 miles of 30.1975, -97.6664, the booking form shows: “AUS drop-offs are available now. Airport pickups are coming soon.” and the request is blocked. Drop-offs at AUS are welcome.
 
 ## How to help a customer book
 
@@ -48,6 +48,7 @@ Estimate (confirmed by text):
   Deposit: $50.00, arranged by text
 Policy agreed: yes
 Notes: [optional]
+Perfect ride: [optional favorite snack, music, chat level]
 ```
 
 Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. Do not invent or publish payment handles or account names; those are shared by text if needed.
@@ -116,6 +117,7 @@ Prefill the form at https://lexistevens.com/concierge/book/ with query parameter
 | pet | 1, true, or yes if a pet or service dog is coming |
 | package | Night-out / DD package: 6h or 10h. Omit for hourly |
 | notes | Optional notes |
+| prefs | Optional "Your perfect ride" preferences: favorite snack, music, chat level (included in the text summary as "Perfect ride") |
 
 Example:
 

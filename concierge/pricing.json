@@ -48,6 +48,7 @@
       "name": "Customer name",
       "phone": "Customer phone",
       "notes": "Optional notes",
+      "prefs": "Optional \"Your perfect ride\" preferences: favorite snack, music, chat level",
       "email": "Optional rider email",
       "bags": "Number of bags (integer)",
       "return": "1, true, or yes to include a return trip",
@@ -195,7 +196,7 @@
     "lng": -97.6664,
     "pickupRadiusMiles": 1.5,
     "pickupsEnabled": false,
-    "pickupNotice": "Airport pickups at AUS are coming soon. Drop-offs are available now.",
+    "pickupNotice": "AUS drop-offs are available now. Airport pickups are coming soon.",
     "service": "Austin airport drop-offs. Pickups at AUS are coming soon."
   }
 }
