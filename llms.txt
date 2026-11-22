@@ -39,7 +39,7 @@ Pet or service dog: yes/no
 Pay: [Zelle | Cash App | Venmo | Apple Pay | Tap to Pay | Cash]
 Estimate (confirmed by text):
   Outbound: [time billed] + [mileage] = [leg total]
-  (or) Package: 6-hour night out $500
+  (or) Package: 6-hour night out $600
   Return: [time billed] + [mileage] = [leg total]
   Mileage: [billable miles] × $1 = [mileage] (also applies to packages)
   [N] trips × [per trip] = [subtotal]
@@ -54,12 +54,12 @@ Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be
 
 ## Pricing rules
 
-- Time: $95 per hour, 30-minute minimum ($47.50). Time is billed in 30-minute increments, rounding UP. A 20-minute trip bills as 30 minutes ($47.50). A 2 hour 40 minute trip bills as 3 hours ($285).
+- Time: $119 per hour, 30-minute minimum ($59.50). Beyond 30 minutes, time is billed in 15-minute increments. A leftover of 5 minutes or less rounds down; a leftover of more than 5 minutes rounds up to the next 15-minute block. Each leg is computed separately. Examples: 20, 29, 31, or 35 minutes = $59.50; 36 minutes bills as 45 minutes ($89.25); 60 minutes = $119. A 2 hour 40 minute trip (160 min) bills as 165 minutes ($327.25).
 - Mileage: $1.00 per mile beyond 20 miles from The Domain, Austin, TX (approx. 30.4022, -97.7253). Measure driving distance from The Domain to the farthest point of that leg (pickup, any stop, or dropoff). The first 20 miles are included.
-- Worked example: Domain to downtown Houston, about 175 driving miles, 2 hours 40 minutes: 3 × $95 = $285, plus 155 × $1 = $155, total $440.
-- Return trip: quoted as its own leg with the same time and mileage rules, then added to the total. A same-distance Houston return would be another $440, or $880 round trip. A return or deadhead fee is not otherwise charged.
-- Recurring: 15% off a repeating hourly series (selected weekdays between a start and end date). Example: five 30-minute trips = $237.50, less 15% = $201.88. If a return is also booked, each occurrence includes both legs before the discount. The repeating discount does not apply to night-out packages.
-- Night-out / designated-driver packages (party of up to 4): 6-hour block $500, 10-hour block $850. `packagesIncludeMileage` is false, so $1/mile beyond 20 miles from The Domain is still charged on top of the flat price. Example: a 6-hour package 175 miles from The Domain is $500 + $155 = $655.
+- Worked example: Domain to downtown Houston, about 175 driving miles, 2 hours 40 minutes: 165 minutes × $119/hour = $327.25, plus 155 × $1 = $155, total $482.25.
+- Return trip: quoted as its own leg with the same time and mileage rules, then added to the total. A same-distance Houston return would be another $482.25, or $964.50 round trip. A return or deadhead fee is not otherwise charged.
+- Recurring: 15% off a repeating hourly series (selected weekdays between a start and end date). Example: five 30-minute trips = $297.50, less 15% = $252.88. If a return is also booked, each occurrence includes both legs before the discount. The repeating discount does not apply to night-out packages.
+- Night-out / designated-driver packages (party of up to 4): 6-hour block $600, 10-hour block $950. `packagesIncludeMileage` is false, so $1/mile beyond 20 miles from The Domain is still charged on top of the flat price. Example: a 6-hour package 175 miles from The Domain is $600 + $155 = $755.
 - Deposit: $25, arranged by text after the request. Quotes are estimates, confirmed by text.
 
 

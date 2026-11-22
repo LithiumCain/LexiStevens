@@ -8,11 +8,12 @@
   "telephoneDisplay": "512.534.1855",
   "areaServed": "Austin, TX and surrounding areas",
   "currency": "USD",
-  "hourlyRate": 95,
+  "hourlyRate": 119,
   "minimumMinutes": 30,
-  "minimumCharge": 47.5,
-  "incrementMinutes": 30,
-  "billingNote": "Time is billed at $95 per hour with a 30-minute minimum ($47.50). Time is rounded UP to the next 30-minute increment. Example: a 2 hour 40 minute trip bills as 3 hours ($285).",
+  "minimumCharge": 59.5,
+  "incrementMinutes": 15,
+  "graceMinutes": 5,
+  "billingNote": "Time is billed at $119 per hour with a 30-minute minimum ($59.50). Beyond 30 minutes, time is billed in 15-minute increments. A leftover of 5 minutes or less rounds down; a leftover of more than 5 minutes rounds up to the next 15-minute block. Each leg is computed separately. Examples: 20, 29, 31, or 35 min = $59.50; 36 min bills as 45 min ($89.25); 60 min = $119; a 2 hour 40 minute trip (160 min) bills as 165 minutes ($327.25).",
   "includedMiles": 20,
   "perMileRate": 1,
   "mileageOrigin": {
@@ -23,7 +24,7 @@
   },
   "recurringDiscountPercent": 15,
   "recurringDiscountRate": 0.15,
-  "recurringNote": "A 15% discount applies when booking a repeating hourly series (for example school runs on selected weekdays). Example: five 30-minute trips are $237.50, less 15% equals $201.88. The repeating discount does not apply to night-out packages.",
+  "recurringNote": "A 15% discount applies when booking a repeating hourly series (for example school runs on selected weekdays). Example: five 30-minute trips are $297.50, less 15% equals $252.88. The repeating discount does not apply to night-out packages.",
   "deposit": 25,
   "depositNote": "A $25 deposit is required to book. The deposit is arranged by text after you send the request. A booking is confirmed when ZLS texts back.",
   "returnFeeEnabled": false,
@@ -65,20 +66,21 @@
       "drivingMilesFromDomain": 175,
       "duration": "2h40m",
       "durationMinutes": 160,
-      "billedHours": 3,
-      "timeCharge": 285,
+      "billedHours": 2.75,
+      "timeCharge": 327.25,
       "billableMiles": 155,
       "mileageCharge": 155,
-      "total": 440
+      "total": 482.25,
+      "billedMinutes": 165
     },
     {
       "name": "Five 30-minute school runs",
       "trips": 5,
       "minutesEach": 30,
       "localMilesFromDomain": 20,
-      "subtotal": 237.5,
+      "subtotal": 297.5,
       "discountPercent": 15,
-      "total": 201.88
+      "total": 252.88
     },
     {
       "name": "20-minute local trip",
@@ -86,42 +88,42 @@
       "billedMinutes": 30,
       "milesFromDomain": 10,
       "billableMiles": 0,
-      "total": 47.5
+      "total": 59.5
     },
     {
       "name": "Domain to downtown Houston with same-distance return leg",
-      "outboundTotal": 440,
-      "returnTotal": 440,
-      "total": 880,
-      "note": "Each leg is 2h40m and 175 miles from The Domain, billed as $285 + $155."
+      "outboundTotal": 482.25,
+      "returnTotal": 482.25,
+      "total": 964.5,
+      "note": "Each leg is 2h40m and 175 miles from The Domain, billed as $327.25 + $155."
     },
     {
       "name": "6-hour night out, local (within 20 miles of The Domain)",
       "package": "6h",
       "milesFromDomain": 10,
-      "packageCharge": 500,
+      "packageCharge": 600,
       "mileageCharge": 0,
-      "total": 500
+      "total": 600
     },
     {
       "name": "6-hour night out, 175 miles from The Domain",
       "package": "6h",
       "drivingMilesFromDomain": 175,
-      "packageCharge": 500,
+      "packageCharge": 600,
       "billableMiles": 155,
       "mileageCharge": 155,
-      "total": 655
+      "total": 755
     },
     {
       "name": "10-hour night out, local",
       "package": "10h",
       "milesFromDomain": 10,
-      "packageCharge": 850,
+      "packageCharge": 950,
       "mileageCharge": 0,
-      "total": 850
+      "total": 950
     }
   ],
-  "returnTripNote": "If a return trip is requested, it is priced as a separate leg (time rounded up in 30-minute increments, plus $1 per mile beyond 20 miles from The Domain to the farthest point of that leg) and added to the total. Recurring series include the return on each occurrence before the 15% discount.",
+  "returnTripNote": "If a return trip is requested, it is priced as a separate leg (same time-billing rules, plus $1 per mile beyond 20 miles from The Domain to the farthest point of that leg) and added to the total. Recurring series include the return on each occurrence before the 15% discount.",
   "paymentMethods": [
     {
       "id": "zelle",
@@ -165,7 +167,7 @@
     {
       "id": "6h",
       "hours": 6,
-      "price": 500,
+      "price": 600,
       "label": "6-hour night out / designated driver",
       "shortLabel": "6-hour night out",
       "maxPassengers": 4
@@ -173,7 +175,7 @@
     {
       "id": "10h",
       "hours": 10,
-      "price": 850,
+      "price": 950,
       "label": "10-hour night out / designated driver",
       "shortLabel": "10-hour night out",
       "maxPassengers": 4
@@ -181,7 +183,7 @@
   ],
   "packagesIncludeMileage": false,
   "packageMaxPassengers": 4,
-  "packageNote": "Night-out / designated-driver packages are flat blocks for a party of up to 4: $500 for 6 hours, $850 for 10 hours. packagesIncludeMileage is false, meaning the flat price does not include mileage \u2014 $1 per mile beyond 20 miles from The Domain still applies. The 15% recurring discount does not apply to packages.",
+  "packageNote": "Night-out / designated-driver packages are flat blocks for a party of up to 4: $600 for 6 hours, $950 for 10 hours. packagesIncludeMileage is false, meaning the flat price does not include mileage \u2014 $1 per mile beyond 20 miles from The Domain still applies. The 15% recurring discount does not apply to packages.",
   "riderPolicy": {
     "url": "https://lexistevens.com/concierge/policy/",
     "cleaningFee": 300,

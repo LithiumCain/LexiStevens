@@ -7,9 +7,10 @@
 
   const CONFIG = {
     serviceName: "ZLS Executive Concierge",
-    hourlyRate: 95,
+    hourlyRate: 119,
     minimumMinutes: 30,
-    incrementMinutes: 30,
+    incrementMinutes: 15,
+    graceMinutes: 5,
     includedMiles: 20,
     perMileRate: 1,
     recurringDiscountRate: 0.15,
@@ -53,14 +54,14 @@
       "6h": {
         id: "6h",
         hours: 6,
-        price: 500,
+        price: 600,
         label: "6-hour night out / designated driver",
         shortLabel: "6-hour night out",
       },
       "10h": {
         id: "10h",
         hours: 10,
-        price: 850,
+        price: 950,
         label: "10-hour night out / designated driver",
         shortLabel: "10-hour night out",
       },
@@ -97,8 +98,10 @@
   }
 
   /**
-   * Bill time in incrementMinutes slices, rounding UP, with a minimum.
-   * 20 min → 30 min; 2h40m (160) → 180 min (3h).
+   * Bill time with a 30-minute minimum. Beyond the minimum, bill in
+   * incrementMinutes slices with a grace window: leftover of graceMinutes
+   * or less rounds down; leftover of more than graceMinutes rounds up.
+   * 20 min → 30; 35 min → 30; 36 min → 45; 2h40m (160) → 165.
    * Returns 0 when duration is missing or zero so the UI can wait for a time.
    */
   function billedMinutes(durationMinutes) {
@@ -106,7 +109,12 @@
     if (minutes <= 0) return 0;
     const inc = CONFIG.incrementMinutes;
     const min = CONFIG.minimumMinutes;
-    return Math.max(min, Math.ceil(minutes / inc) * inc);
+    const grace = CONFIG.graceMinutes;
+    if (minutes <= min) return min;
+    const floorBlock = Math.floor(minutes / inc) * inc;
+    const leftover = minutes - floorBlock;
+    const billed = leftover === 0 ? minutes : leftover <= grace ? floorBlock : floorBlock + inc;
+    return Math.max(min, billed);
   }
 
   function billableMiles(farthestMilesFromDomain) {
