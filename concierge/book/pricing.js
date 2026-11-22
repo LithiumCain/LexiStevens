@@ -14,7 +14,7 @@
     includedMiles: 20,
     perMileRate: 1,
     recurringDiscountRate: 0.15,
-    deposit: 25,
+    deposit: 50,
     currency: "USD",
     domain: {
       name: "The Domain, Austin, TX",
@@ -47,7 +47,7 @@
       { id: "cash", label: "Cash", timing: "at pickup" },
     ],
     paymentNote:
-      "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. A $25 deposit is arranged by text after you send the request.",
+      "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. A $50 deposit is arranged by text after you send the request.",
     vehicleSeatsComfortably: 4,
     packageMaxPassengers: 4,
     packages: {

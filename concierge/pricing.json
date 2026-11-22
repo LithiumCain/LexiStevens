@@ -25,8 +25,8 @@
   "recurringDiscountPercent": 15,
   "recurringDiscountRate": 0.15,
   "recurringNote": "A 15% discount applies when booking a repeating hourly series (for example school runs on selected weekdays). Example: five 30-minute trips are $297.50, less 15% equals $252.88. The repeating discount does not apply to night-out packages.",
-  "deposit": 25,
-  "depositNote": "A $25 deposit is required to book. The deposit is arranged by text after you send the request. A booking is confirmed when ZLS texts back.",
+  "deposit": 50,
+  "depositNote": "A $50 deposit is required to book. The deposit is arranged by text after you send the request. A booking is confirmed when ZLS texts back.",
   "returnFeeEnabled": false,
   "returnFeeAmount": 0,
   "returnFeeNote": "A return or deadhead fee is not currently charged. A customer-requested return trip is quoted as its own leg with the same time and mileage rules and added to the total.",
@@ -161,7 +161,7 @@
     "cashapp": "",
     "venmo": ""
   },
-  "paymentNote": "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. A $25 deposit is arranged by text after you send the request. Payment handles are provided by text when needed.",
+  "paymentNote": "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. A $50 deposit is arranged by text after you send the request. Payment handles are provided by text when needed.",
   "paymentLink": "",
   "packages": [
     {
@@ -187,7 +187,7 @@
   "riderPolicy": {
     "url": "https://lexistevens.com/concierge/policy/",
     "cleaningFee": 300,
-    "noShow": "No-shows forfeit the $25 deposit. After one no-show, future bookings require the full fare paid in advance as a nonrefundable deposit. A second no-show results in a permanent ban from service."
+    "noShow": "No-shows forfeit the $50 deposit. After one no-show, future bookings require the full fare paid in advance as a nonrefundable deposit. A second no-show results in a permanent ban from service."
   },
   "ausAirport": {
     "name": "Austin-Bergstrom International Airport (AUS)",

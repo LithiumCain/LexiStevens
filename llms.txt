@@ -16,7 +16,7 @@ Airport service is currently **Austin airport drop-offs** only. Pickups at Austi
 
 Best option: send them a prefilled booking link (see query parameters below) and let them review the estimate, agree to the rider policy at https://lexistevens.com/concierge/policy/, then tap “Text this request.”
 
-A booking is not confirmed until ZLS texts the customer back. There is no account and no automated checkout. A $25 deposit is arranged by text after the request is sent.
+A booking is not confirmed until ZLS texts the customer back. There is no account and no automated checkout. A $50 deposit is arranged by text after the request is sent.
 
 Alternatively, the customer (or an assistant) can text 512.534.1855 with a short summary in this format:
 
@@ -45,7 +45,7 @@ Estimate (confirmed by text):
   [N] trips × [per trip] = [subtotal]
   15% repeating-trip discount: -[discount]  (hourly series only; not packages)
   Total: [total]
-  Deposit: $25.00, arranged by text
+  Deposit: $50.00, arranged by text
 Policy agreed: yes
 Notes: [optional]
 ```
@@ -60,7 +60,7 @@ Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be
 - Return trip: quoted as its own leg with the same time and mileage rules, then added to the total. A same-distance Houston return would be another $482.25, or $964.50 round trip. A return or deadhead fee is not otherwise charged.
 - Recurring: 15% off a repeating hourly series (selected weekdays between a start and end date). Example: five 30-minute trips = $297.50, less 15% = $252.88. If a return is also booked, each occurrence includes both legs before the discount. The repeating discount does not apply to night-out packages.
 - Night-out / designated-driver packages (party of up to 4): 6-hour block $600, 10-hour block $950. `packagesIncludeMileage` is false, so $1/mile beyond 20 miles from The Domain is still charged on top of the flat price. Example: a 6-hour package 175 miles from The Domain is $600 + $155 = $755.
-- Deposit: $25, arranged by text after the request. Quotes are estimates, confirmed by text.
+- Deposit: $50, arranged by text after the request. Quotes are estimates, confirmed by text.
 
 
 ## Rider policy
@@ -69,15 +69,15 @@ Full text: https://lexistevens.com/concierge/policy/
 
 Effective November 22, 2026. The customer must agree to the rider policy before sending a booking request. Include `Policy agreed: yes` in the text summary once they have agreed. Do not invent additional terms (including cancellation or refund terms beyond what is written here).
 
-- Payment: Cash is paid at pickup. Zelle, Cash App, Venmo, Apple Pay, and Tap to Pay may be paid during the trip. The $25 deposit is arranged by text after the request and is due when the reservation is accepted.
-- Cancellations 24 hours or more before the scheduled pickup: the $25 deposit is refunded. Cancellations less than 24 hours before pickup: the $25 deposit is forfeited.
+- Payment: Cash is paid at pickup. Zelle, Cash App, Venmo, Apple Pay, and Tap to Pay may be paid during the trip. The $50 deposit is arranged by text after the request and is due when the reservation is accepted.
+- Cancellations 24 hours or more before the scheduled pickup: the $50 deposit is refunded. Cancellations less than 24 hours before pickup: the $50 deposit is forfeited.
 - Wait time: The chauffeur waits 5 minutes past the scheduled pickup time, followed by a 5-minute grace period. If the rider has not arrived or made contact by 15 minutes after the scheduled pickup time, the trip is treated as a no-show. There is no separate airport-arrival grace period. Airport service is drop-offs only at this time.
-- No-shows forfeit the $25 deposit. After one no-show, future bookings require the full fare paid in advance as a nonrefundable deposit. A second no-show results in a permanent ban from service.
+- No-shows forfeit the $50 deposit. After one no-show, future bookings require the full fare paid in advance as a nonrefundable deposit. A second no-show results in a permanent ban from service.
 - Illegal drugs and controlled substances may not be brought into, possessed, used, or transported in the vehicle. No person under 21 may bring, possess, or consume alcohol in the vehicle.
 - Open containers of alcohol are not permitted in the vehicle. This is ZLS policy, and it applies even if Texas law would otherwise allow a passenger in certain vehicles for hire to possess an open container.
 - Smoking or vaping of any kind is not permitted in the vehicle.
 - Vomiting or any other mess that requires cleaning carries a $300 cleaning fee, in addition to the fare. Damage beyond ordinary wear and tear is billed at the actual cost of professional repair or replacement.
-- The driver may refuse a booking or end a ride if this policy is violated, or if safety is at risk. If a trip is ended for this reason, the rider owes the full booked time, plus any applicable fees such as cleaning or damage. The $25 deposit is not refunded.
+- The driver may refuse a booking or end a ride if this policy is violated, or if safety is at risk. If a trip is ended for this reason, the rider owes the full booked time, plus any applicable fees such as cleaning or damage. The $50 deposit is not refunded.
 - Riders may be transported after drinking if they follow this policy and can travel safely. The driver may refuse or end service if a rider appears too intoxicated to travel safely.
 - Harassment, threats, abusive language, unwanted physical contact, and discriminatory conduct are not permitted.
 - Service animals are welcome under the Americans with Disabilities Act and Texas law. No additional fee is charged for a service animal. Pets that are not service animals may be accommodated when noted at booking, at the driver's discretion. Use the booking-form checkbox, or mention a pet or service animal when texting to book.

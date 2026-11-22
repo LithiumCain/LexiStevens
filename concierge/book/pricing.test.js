@@ -23,7 +23,7 @@ almostEqual(houston.timeCharge, 327.25, "Houston time charge");
 almostEqual(houston.billableMiles, 155, "Houston billable miles");
 almostEqual(houston.mileageCharge, 155, "Houston mileage charge");
 almostEqual(houston.total, 482.25, "Houston total");
-almostEqual(houston.deposit, 25, "Houston deposit");
+almostEqual(houston.deposit, 50, "Houston deposit");
 almostEqual(houston.hasReturn, false, "Houston has no return");
 
 // Five 30-min school runs, 15% off: $297.50 → $252.88

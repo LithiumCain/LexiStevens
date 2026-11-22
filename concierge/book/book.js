@@ -376,7 +376,7 @@
     } else {
       lines.push("  Total: to be confirmed");
     }
-    lines.push("  Deposit: $25.00, arranged by text");
+    lines.push("  Deposit: $50.00, arranged by text");
     lines.push("Policy agreed: " + (policyAgreed() ? "yes" : "no"));
     if (val("notes")) lines.push("Notes: " + val("notes"));
     return lines.join("\n");
