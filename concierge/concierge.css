@@ -472,7 +472,16 @@
   counter-reset: policy;
 }
 
-.zls-policy-list li {
+.zls-effective {
+  margin: 0 0 0.85rem;
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zls-bronze-light);
+  font-weight: 500;
+}
+
+.zls-policy-list > li {
   position: relative;
   margin: 0 0 1.75rem;
   padding: 1.35rem 1.4rem 1.3rem 4.1rem;
@@ -480,9 +489,10 @@
   border: 1px solid rgba(160, 122, 82, 0.28);
   border-top: 2px solid var(--zls-bronze);
   counter-increment: policy;
+  scroll-margin-top: 5.5rem;
 }
 
-.zls-policy-list li::before {
+.zls-policy-list > li::before {
   content: counter(policy, decimal-leading-zero);
   position: absolute;
   left: 1.15rem;
@@ -501,12 +511,39 @@
   letter-spacing: 0.02em;
 }
 
-.zls-policy-list p {
-  margin: 0;
+.zls-policy-list p,
+.zls-policy-list li {
   font-size: 1.02rem;
   line-height: 1.7;
   color: var(--zls-cream-soft);
   font-weight: 300;
+}
+
+.zls-policy-list p {
+  margin: 0;
+}
+
+.zls-policy-list p + p,
+.zls-policy-list p + ul,
+.zls-policy-list ul + p {
+  margin-top: 0.7rem;
+}
+
+.zls-policy-list ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.zls-policy-list ul li {
+  margin: 0 0 0.4rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  position: static;
+}
+
+.zls-policy-list ul li:last-child {
+  margin-bottom: 0;
 }
 
 .zls-policy-close {
@@ -520,8 +557,12 @@
   color: var(--zls-cream);
 }
 
+.zls-policy-close a {
+  color: var(--zls-bronze-light);
+}
+
 @media (max-width: 700px) {
-  .zls-policy-list li {
+  .zls-policy-list > li {
     padding-left: 3.6rem;
   }
 }

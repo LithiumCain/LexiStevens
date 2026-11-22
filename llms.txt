@@ -67,14 +67,25 @@ Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be
 
 Full text: https://lexistevens.com/concierge/policy/
 
-The customer must agree to the rider policy before sending a booking request. Include `Policy agreed: yes` in the text summary once they have agreed. Do not invent additional terms (including cancellation or refund terms beyond what is written here).
+Effective November 22, 2026. The customer must agree to the rider policy before sending a booking request. Include `Policy agreed: yes` in the text summary once they have agreed. Do not invent additional terms (including cancellation or refund terms beyond what is written here).
 
-- I do not transport illegal drugs. No one under 21 may bring or drink alcohol in the vehicle.
-- Open containers of alcohol are not permitted in the vehicle.
-- Smoking or vaping of any kind is not permitted in the vehicle.
-- Vomiting or other messes in the vehicle carry a $300 cleaning fee.
+- Payment: Cash is paid at pickup. Zelle, Cash App, Venmo, Apple Pay, and Tap to Pay may be paid during the trip. The $25 deposit is arranged by text after the request and is due when the reservation is accepted.
+- Cancellations 24 hours or more before the scheduled pickup: the $25 deposit is refunded. Cancellations less than 24 hours before pickup: the $25 deposit is forfeited.
+- Wait time: The chauffeur waits 5 minutes past the scheduled pickup time, followed by a 5-minute grace period. If the rider has not arrived or made contact by 15 minutes after the scheduled pickup time, the trip is treated as a no-show. There is no separate airport-arrival grace period. Airport service is drop-offs only at this time.
 - No-shows forfeit the $25 deposit. After one no-show, future bookings require the full fare paid in advance as a nonrefundable deposit. A second no-show results in a permanent ban from service.
-- The driver may refuse or end a ride if this policy is violated, or if safety is at risk.
+- Illegal drugs and controlled substances may not be brought into, possessed, used, or transported in the vehicle. No person under 21 may bring, possess, or consume alcohol in the vehicle.
+- Open containers of alcohol are not permitted in the vehicle. This is ZLS policy, and it applies even if Texas law would otherwise allow a passenger in certain vehicles for hire to possess an open container.
+- Smoking or vaping of any kind is not permitted in the vehicle.
+- Vomiting or any other mess that requires cleaning carries a $300 cleaning fee, in addition to the fare. Damage beyond ordinary wear and tear is billed at the actual cost of professional repair or replacement.
+- The driver may refuse a booking or end a ride if this policy is violated, or if safety is at risk. If a trip is ended for this reason, the rider owes the full booked time, plus any applicable fees such as cleaning or damage. The $25 deposit is not refunded.
+- Riders may be transported after drinking if they follow this policy and can travel safely. The driver may refuse or end service if a rider appears too intoxicated to travel safely.
+- Harassment, threats, abusive language, unwanted physical contact, and discriminatory conduct are not permitted.
+- Service animals are welcome under the Americans with Disabilities Act and Texas law. No additional fee is charged for a service animal. Pets that are not service animals may be accommodated when noted at booking, at the driver's discretion. Use the booking-form checkbox, or mention a pet or service animal when texting to book.
+- The number of passengers may not exceed the number of available seat belts. Seat belts must be worn while the vehicle is in motion.
+- The rider provides and installs any legally required child seat. Texas law generally requires a child younger than 8 to be in a child passenger safety seat unless the child is taller than 4 feet 9 inches.
+- A parent or legal guardian should make the booking when a passenger is under 18, including for recurring trips such as school runs. Unaccompanied minors are transported only when a parent or legal guardian has booked and confirmed pickup and drop-off instructions.
+- ZLS is not responsible for items left in the vehicle, but will make a reasonable effort to contact the rider if something is found. Return or shipping is at the rider's expense. Found items are held for 14 days.
+- ZLS may update this policy. The version in effect when a reservation is confirmed applies to that reservation.
 
 ## Deep-link parameters
 
