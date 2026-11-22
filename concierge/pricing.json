@@ -1,0 +1,199 @@
+{
+  "service": "ZLS Executive Concierge",
+  "description": "Discreet private driver and personal concierge service in Austin, TX and surrounding areas.",
+  "url": "https://lexistevens.com/concierge/book/",
+  "servicePage": "https://lexistevens.com/concierge/",
+  "pricingUrl": "https://lexistevens.com/concierge/pricing.json",
+  "telephone": "+15125341855",
+  "telephoneDisplay": "512.534.1855",
+  "areaServed": "Austin, TX and surrounding areas",
+  "currency": "USD",
+  "hourlyRate": 95,
+  "minimumMinutes": 30,
+  "minimumCharge": 47.5,
+  "incrementMinutes": 30,
+  "billingNote": "Time is billed at $95 per hour with a 30-minute minimum ($47.50). Time is rounded UP to the next 30-minute increment. Example: a 2 hour 40 minute trip bills as 3 hours ($285).",
+  "includedMiles": 20,
+  "perMileRate": 1,
+  "mileageOrigin": {
+    "name": "The Domain, Austin, TX",
+    "lat": 30.4022,
+    "lng": -97.7253,
+    "note": "Mileage is driving distance from The Domain to the farthest point of the trip (pickup, any stop, or dropoff \u2014 whichever is farthest). The first 20 miles are included. Every mile after that is $1.00."
+  },
+  "recurringDiscountPercent": 15,
+  "recurringDiscountRate": 0.15,
+  "recurringNote": "A 15% discount applies when booking a repeating hourly series (for example school runs on selected weekdays). Example: five 30-minute trips are $237.50, less 15% equals $201.88. The repeating discount does not apply to night-out packages.",
+  "deposit": 25,
+  "depositNote": "A $25 deposit is required to book. The deposit is arranged by text after you send the request. A booking is confirmed when ZLS texts back.",
+  "returnFeeEnabled": false,
+  "returnFeeAmount": 0,
+  "returnFeeNote": "A return or deadhead fee is not currently charged. A customer-requested return trip is quoted as its own leg with the same time and mileage rules and added to the total.",
+  "confirmation": "A booking is confirmed when ZLS texts back.",
+  "howToBook": {
+    "web": "https://lexistevens.com/concierge/book/",
+    "sms": "Text 512.534.1855 with rider name, phone, optional email, pickup, dropoff, stop requests, date and time, passengers, bags, pet or service dog if any, whether there is a return trip, whether the trip repeats, a night-out package if any (6h or 10h), preferred payment method, and the estimate.",
+    "deepLinkParams": {
+      "pickup": "Pickup address",
+      "dropoff": "Dropoff address",
+      "stops": "Free-text stop or special request (for example a coffee run or a second address)",
+      "date": "YYYY-MM-DD (trip date, or series start if recurring)",
+      "time": "HH:MM 24-hour",
+      "pax": "Passenger count (integer)",
+      "recurring": "1, true, or yes for a repeating series",
+      "weekdays": "MTWRF style (U=Sun, M=Mon, T=Tue, W=Wed, R=Thu, F=Fri, S=Sat) or comma-separated names (mon,tue,wed)",
+      "start": "YYYY-MM-DD series start",
+      "end": "YYYY-MM-DD series end",
+      "name": "Customer name",
+      "phone": "Customer phone",
+      "notes": "Optional notes",
+      "email": "Optional rider email",
+      "bags": "Number of bags (integer)",
+      "return": "1, true, or yes to include a return trip",
+      "returnDate": "YYYY-MM-DD return pickup date (one-time trips)",
+      "returnTime": "HH:MM 24-hour return pickup time",
+      "returnPickup": "Return pickup address (defaults to the outbound dropoff)",
+      "returnDropoff": "Return dropoff address (defaults to the original pickup)",
+      "pay": "Preferred payment method: zelle, cashapp, venmo, applepay, taptopay, or cash",
+      "pet": "1, true, or yes if a pet or service dog is coming",
+      "package": "Night-out / DD package: 6h or 10h. Omit or leave empty for hourly."
+    }
+  },
+  "examples": [
+    {
+      "name": "Domain to downtown Houston",
+      "drivingMilesFromDomain": 175,
+      "duration": "2h40m",
+      "durationMinutes": 160,
+      "billedHours": 3,
+      "timeCharge": 285,
+      "billableMiles": 155,
+      "mileageCharge": 155,
+      "total": 440
+    },
+    {
+      "name": "Five 30-minute school runs",
+      "trips": 5,
+      "minutesEach": 30,
+      "localMilesFromDomain": 20,
+      "subtotal": 237.5,
+      "discountPercent": 15,
+      "total": 201.88
+    },
+    {
+      "name": "20-minute local trip",
+      "durationMinutes": 20,
+      "billedMinutes": 30,
+      "milesFromDomain": 10,
+      "billableMiles": 0,
+      "total": 47.5
+    },
+    {
+      "name": "Domain to downtown Houston with same-distance return leg",
+      "outboundTotal": 440,
+      "returnTotal": 440,
+      "total": 880,
+      "note": "Each leg is 2h40m and 175 miles from The Domain, billed as $285 + $155."
+    },
+    {
+      "name": "6-hour night out, local (within 20 miles of The Domain)",
+      "package": "6h",
+      "milesFromDomain": 10,
+      "packageCharge": 500,
+      "mileageCharge": 0,
+      "total": 500
+    },
+    {
+      "name": "6-hour night out, 175 miles from The Domain",
+      "package": "6h",
+      "drivingMilesFromDomain": 175,
+      "packageCharge": 500,
+      "billableMiles": 155,
+      "mileageCharge": 155,
+      "total": 655
+    },
+    {
+      "name": "10-hour night out, local",
+      "package": "10h",
+      "milesFromDomain": 10,
+      "packageCharge": 850,
+      "mileageCharge": 0,
+      "total": 850
+    }
+  ],
+  "returnTripNote": "If a return trip is requested, it is priced as a separate leg (time rounded up in 30-minute increments, plus $1 per mile beyond 20 miles from The Domain to the farthest point of that leg) and added to the total. Recurring series include the return on each occurrence before the 15% discount.",
+  "paymentMethods": [
+    {
+      "id": "zelle",
+      "label": "Zelle",
+      "timing": "during the trip"
+    },
+    {
+      "id": "cashapp",
+      "label": "Cash App",
+      "timing": "during the trip"
+    },
+    {
+      "id": "venmo",
+      "label": "Venmo",
+      "timing": "during the trip"
+    },
+    {
+      "id": "applepay",
+      "label": "Apple Pay",
+      "timing": "during the trip"
+    },
+    {
+      "id": "taptopay",
+      "label": "Tap to Pay",
+      "timing": "during the trip"
+    },
+    {
+      "id": "cash",
+      "label": "Cash",
+      "timing": "at pickup"
+    }
+  ],
+  "paymentHandles": {
+    "zelle": "",
+    "cashapp": "",
+    "venmo": ""
+  },
+  "paymentNote": "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. A $25 deposit is arranged by text after you send the request. Payment handles are provided by text when needed.",
+  "paymentLink": "",
+  "packages": [
+    {
+      "id": "6h",
+      "hours": 6,
+      "price": 500,
+      "label": "6-hour night out / designated driver",
+      "shortLabel": "6-hour night out",
+      "maxPassengers": 4
+    },
+    {
+      "id": "10h",
+      "hours": 10,
+      "price": 850,
+      "label": "10-hour night out / designated driver",
+      "shortLabel": "10-hour night out",
+      "maxPassengers": 4
+    }
+  ],
+  "packagesIncludeMileage": false,
+  "packageMaxPassengers": 4,
+  "packageNote": "Night-out / designated-driver packages are flat blocks for a party of up to 4: $500 for 6 hours, $850 for 10 hours. packagesIncludeMileage is false, meaning the flat price does not include mileage \u2014 $1 per mile beyond 20 miles from The Domain still applies. The 15% recurring discount does not apply to packages.",
+  "riderPolicy": {
+    "url": "https://lexistevens.com/concierge/policy/",
+    "cleaningFee": 300,
+    "noShow": "No-shows forfeit the $25 deposit. After one no-show, future bookings require the full fare paid in advance as a nonrefundable deposit. A second no-show results in a permanent ban from service."
+  },
+  "ausAirport": {
+    "name": "Austin-Bergstrom International Airport (AUS)",
+    "lat": 30.1975,
+    "lng": -97.6664,
+    "pickupRadiusMiles": 1.5,
+    "pickupsEnabled": false,
+    "pickupNotice": "Airport pickups at AUS are coming soon. Drop-offs are available now.",
+    "service": "Austin airport drop-offs. Pickups at AUS are coming soon."
+  }
+}

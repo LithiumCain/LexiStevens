@@ -449,3 +449,79 @@
     padding: 0 0.5rem;
   }
 }
+
+
+/* ---------------------------------
+   RIDER POLICY
+   --------------------------------- */
+
+.zls-policy {
+  max-width: 42rem !important;
+  padding-top: 4rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.page-policy h1.zls-heading {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+}
+
+.zls-policy-list {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  counter-reset: policy;
+}
+
+.zls-policy-list li {
+  position: relative;
+  margin: 0 0 1.75rem;
+  padding: 1.35rem 1.4rem 1.3rem 4.1rem;
+  background: var(--zls-slate-mid);
+  border: 1px solid rgba(160, 122, 82, 0.28);
+  border-top: 2px solid var(--zls-bronze);
+  counter-increment: policy;
+}
+
+.zls-policy-list li::before {
+  content: counter(policy, decimal-leading-zero);
+  position: absolute;
+  left: 1.15rem;
+  top: 1.25rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  color: var(--zls-bronze-light);
+}
+
+.zls-policy-list h2 {
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.45rem;
+  letter-spacing: 0.02em;
+}
+
+.zls-policy-list p {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--zls-cream-soft);
+  font-weight: 300;
+}
+
+.zls-policy-close {
+  margin: 2rem 0 0;
+  padding: 1.25rem 1.4rem;
+  border-left: 2px solid var(--zls-bronze);
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.55;
+  color: var(--zls-cream);
+}
+
+@media (max-width: 700px) {
+  .zls-policy-list li {
+    padding-left: 3.6rem;
+  }
+}

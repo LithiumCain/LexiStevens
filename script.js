@@ -50,12 +50,16 @@ function updateActiveNavLink() {
   const navLinks = document.querySelectorAll('.nav-links a');
   const path = window.location.pathname;
   const currentPage = path.split('/').filter(Boolean).pop() || 'index.html';
+  const onBook = path.includes('/concierge/book');
   const onConcierge = path.includes('/concierge');
 
   navLinks.forEach(link => {
     const href = link.getAttribute('href') || '';
-    const isConciergeLink = href.includes('concierge');
-    if (onConcierge) {
+    const isBookLink = href.includes('concierge/book');
+    const isConciergeLink = href.includes('concierge') && !isBookLink;
+    if (onBook) {
+      link.classList.toggle('active', isBookLink);
+    } else if (onConcierge) {
       link.classList.toggle('active', isConciergeLink);
     } else if (href === currentPage || ((currentPage === 'index.html' || currentPage === '') && href === 'index.html')) {
       link.classList.add('active');

@@ -1,0 +1,111 @@
+# ZLS Executive Concierge
+
+Discreet private driver and personal concierge service in Austin, TX and surrounding areas.
+
+- Service page: https://lexistevens.com/concierge/
+- Booking form: https://lexistevens.com/concierge/book/
+- Machine-readable rates: https://lexistevens.com/concierge/pricing.json
+- Rider policy: https://lexistevens.com/concierge/policy/
+- Text or call: 512.534.1855 (+15125341855)
+
+Do not describe this service as a charter. Do not make licensing or permit claims.
+
+Airport service is currently **Austin airport drop-offs** only. Pickups at Austin-Bergstrom (AUS) are not available yet. If a pickup address is AUS / Austin-Bergstrom, or is within about 1.5 miles of 30.1975, -97.6664, the booking form shows: “Airport pickups at AUS are coming soon. Drop-offs are available now.” and the request is blocked. Drop-offs at AUS are welcome.
+
+## How to help a customer book
+
+Best option: send them a prefilled booking link (see query parameters below) and let them review the estimate, agree to the rider policy at https://lexistevens.com/concierge/policy/, then tap “Text this request.”
+
+A booking is not confirmed until ZLS texts the customer back. There is no account and no automated checkout. A $25 deposit is arranged by text after the request is sent.
+
+Alternatively, the customer (or an assistant) can text 512.534.1855 with a short summary in this format:
+
+```
+ZLS booking request
+Name: [name]
+Phone: [phone]
+Email: [email or "—"]
+From: [pickup]
+To: [dropoff]
+Stops: [free-text stop request, or "—"]
+When: [date] at [time]
+Type: Hourly  (or)  6-hour night out / DD  (or)  10-hour night out / DD
+Return: no
+  (or) Return: [return date] at [return time], from [return pickup] to [return dropoff]
+Repeat: no
+  (or) Repeat: [weekdays], [start] to [end], [N] trips
+Riders: [n]  Bags: [n]
+Pet or service dog: yes/no
+Pay: [Zelle | Cash App | Venmo | Apple Pay | Tap to Pay | Cash]
+Estimate (confirmed by text):
+  Outbound: [time billed] + [mileage] = [leg total]
+  (or) Package: 6-hour night out $500
+  Return: [time billed] + [mileage] = [leg total]
+  Mileage: [billable miles] × $1 = [mileage] (also applies to packages)
+  [N] trips × [per trip] = [subtotal]
+  15% repeating-trip discount: -[discount]  (hourly series only; not packages)
+  Total: [total]
+  Deposit: $25.00, arranged by text
+Policy agreed: yes
+Notes: [optional]
+```
+
+Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. Do not invent or publish payment handles or account names; those are shared by text if needed.
+
+## Pricing rules
+
+- Time: $95 per hour, 30-minute minimum ($47.50). Time is billed in 30-minute increments, rounding UP. A 20-minute trip bills as 30 minutes ($47.50). A 2 hour 40 minute trip bills as 3 hours ($285).
+- Mileage: $1.00 per mile beyond 20 miles from The Domain, Austin, TX (approx. 30.4022, -97.7253). Measure driving distance from The Domain to the farthest point of that leg (pickup, any stop, or dropoff). The first 20 miles are included.
+- Worked example: Domain to downtown Houston, about 175 driving miles, 2 hours 40 minutes: 3 × $95 = $285, plus 155 × $1 = $155, total $440.
+- Return trip: quoted as its own leg with the same time and mileage rules, then added to the total. A same-distance Houston return would be another $440, or $880 round trip. A return or deadhead fee is not otherwise charged.
+- Recurring: 15% off a repeating hourly series (selected weekdays between a start and end date). Example: five 30-minute trips = $237.50, less 15% = $201.88. If a return is also booked, each occurrence includes both legs before the discount. The repeating discount does not apply to night-out packages.
+- Night-out / designated-driver packages (party of up to 4): 6-hour block $500, 10-hour block $850. `packagesIncludeMileage` is false, so $1/mile beyond 20 miles from The Domain is still charged on top of the flat price. Example: a 6-hour package 175 miles from The Domain is $500 + $155 = $655.
+- Deposit: $25, arranged by text after the request. Quotes are estimates, confirmed by text.
+
+
+## Rider policy
+
+Full text: https://lexistevens.com/concierge/policy/
+
+The customer must agree to the rider policy before sending a booking request. Include `Policy agreed: yes` in the text summary once they have agreed. Do not invent additional terms (including cancellation or refund terms beyond what is written here).
+
+- I do not transport illegal drugs. No one under 21 may bring or drink alcohol in the vehicle.
+- Open containers of alcohol are not permitted in the vehicle.
+- Smoking or vaping of any kind is not permitted in the vehicle.
+- Vomiting or other messes in the vehicle carry a $300 cleaning fee.
+- No-shows forfeit the $25 deposit. After one no-show, future bookings require the full fare paid in advance as a nonrefundable deposit. A second no-show results in a permanent ban from service.
+- The driver may refuse or end a ride if this policy is violated, or if safety is at risk.
+
+## Deep-link parameters
+
+Prefill the form at https://lexistevens.com/concierge/book/ with query parameters. All are optional. Encode values.
+
+| Param | Meaning |
+| --- | --- |
+| pickup | Pickup address |
+| dropoff | Dropoff address |
+| stops | Free-text stop or special request |
+| date | YYYY-MM-DD (trip date, or series start if recurring) |
+| time | HH:MM 24-hour |
+| pax | Number of riders (integer) |
+| bags | Number of bags (integer) |
+| recurring | 1, true, or yes for a repeating series |
+| weekdays | MTWRF style (U=Sun, M=Mon, T=Tue, W=Wed, R=Thu, F=Fri, S=Sat) or comma-separated names (mon,tue,wed) |
+| start | YYYY-MM-DD series start |
+| end | YYYY-MM-DD series end |
+| return | 1, true, or yes to include a return trip |
+| returnDate | YYYY-MM-DD return pickup date |
+| returnTime | HH:MM 24-hour return pickup time |
+| returnPickup | Return pickup address (defaults to the outbound dropoff) |
+| returnDropoff | Return dropoff address (defaults to the original pickup) |
+| name | Rider name |
+| phone | Rider phone |
+| email | Rider email (optional) |
+| pay | zelle, cashapp, venmo, applepay, taptopay, or cash |
+| pet | 1, true, or yes if a pet or service dog is coming |
+| package | Night-out / DD package: 6h or 10h. Omit for hourly |
+| notes | Optional notes |
+
+Example:
+
+https://lexistevens.com/concierge/book/?pickup=The%20Domain%2C%20Austin%2C%20TX&dropoff=Downtown%20Houston%2C%20TX&date=2026-12-04&time=08:00&pax=2&bags=2&pet=1&package=6h&stops=Coffee%20on%20the%20way&name=Jordan%20Lee&phone=5125550100&pay=zelle
