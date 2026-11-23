@@ -79,7 +79,7 @@
   }
   function isReturn() {
     const checked = document.querySelector('input[name="hasReturn"]:checked');
-    return checked && checked.value === "yes" && !currentPackage();
+    return checked && checked.value === "yes" && !currentPackage() && !rideHome();
   }
   function selectedWeekdays() {
     return qsa('input[name="weekday"]:checked').map(function (el) {
@@ -433,6 +433,7 @@
     if (step === 4) renderReview();
     updateHandoff();
     updateOccurrences();
+    renderSmart();
   }
 
   function escapeHtml(s) {
@@ -486,6 +487,9 @@
       notes: val("notes"),
       ret: null,
       repeat: null,
+      rideHome: rideHome(),
+      student: isStudent(),
+      plans: smart.plans.slice(),
     };
     if (!pkg && isReturn()) {
       d.ret = {
@@ -524,7 +528,7 @@
     if (t.stops) lines.push("Stops: " + t.stops);
     const when = formatWhenShort(t.date, t.time, true);
     if (when) lines.push("When: " + when);
-    lines.push("Type: " + (t.pkg ? packageDisplayName(t.pkg) : "Hourly"));
+    lines.push("Type: " + (t.pkg ? packageDisplayName(t.pkg) : "Hourly") + (t.rideHome ? " · Ride home only" : ""));
     if (t.ret) {
       lines.push(
         "Return: " + formatWhenShort(t.ret.date, t.ret.time, false) +
@@ -538,10 +542,12 @@
       );
     }
     lines.push("Riders: " + t.pax + (t.bags ? "  Bags: " + t.bags : ""));
+    if (t.student) lines.push("Riding for a student: yes");
     if (t.pet) lines.push("Pet or service dog: yes");
     if (t.pay) lines.push("Pay: " + t.pay);
     if (t.prefs) lines.push("Perfect ride: " + t.prefs);
     if (t.notes) lines.push("Notes: " + t.notes);
+    if (t.plans.length) lines.push("Planning ahead: " + t.plans.join("; "));
     if (q && q.ready) {
       lines.push("Estimate (confirmed by text):");
       receiptRows(q).forEach(function (r) {
@@ -553,7 +559,7 @@
     } else {
       lines.push("Estimate: to be confirmed");
     }
-    lines.push("Deposit: " + P.formatMoney(cfg.deposit) + ", arranged by text");
+    lines.push("Deposit: " + P.formatMoney(cfg.deposit) + " by Square link after approval (24 hours to pay)");
     lines.push("Policy agreed: " + (policyAgreed() ? "yes" : "no"));
     return lines.join("\n");
   }
@@ -602,10 +608,11 @@
     const when = formatWhenShort(t.date, t.time, false);
     trip += '<p class="iti-when">' + escapeHtml(when || "Date and time to choose") + "</p>";
     trip += '<p class="iti-type">' + escapeHtml(t.pkg ? packageDisplayName(t.pkg) + " · up to " + cfg.packageMaxPassengers + " riders" : "Hourly · $119/hour") + "</p>";
+    if (t.rideHome) trip += '<p class="iti-badge">Ride home only</p>';
     trip += '<ol class="iti-line">';
-    if (t.pickup) trip += stopHtml("from", "Pickup", t.pickup);
+    if (t.pickup) trip += stopHtml("from", t.rideHome ? "I’ll pick you up at" : "Pickup", t.pickup);
     if (t.stops) trip += freeStopHtml(t.stops);
-    if (t.dropoff) trip += stopHtml("to", "Drop-off", t.dropoff);
+    if (t.dropoff) trip += stopHtml("to", t.rideHome ? "Home" : "Drop-off", t.dropoff);
     trip += "</ol>";
     if (t.repeat) {
       trip += '<ul class="iti-rows">' + rowHtml("repeat",
@@ -624,10 +631,12 @@
     if (t.name) who += rowHtml("person", t.name, [t.phone, t.email].filter(Boolean).join(" · "));
     who += rowHtml("riders", t.pax + (t.pax === 1 ? " rider" : " riders"), "");
     if (t.bags) who += rowHtml("bags", t.bags + (t.bags === 1 ? " bag" : " bags"), "I’ll handle them");
+    if (t.student) who += rowHtml("person", "Riding for a student", "");
     if (t.pet) who += rowHtml("pet", "A pet or service dog is coming", "They’re welcome");
     if (t.pay) who += rowHtml("pay", t.pay, t.payTiming ? "Paid " + t.payTiming : "");
     if (t.prefs) who += rowHtml("prefs", "Your perfect ride", t.prefs);
     if (t.notes) who += rowHtml("notes", "Notes", t.notes);
+    if (t.plans.length) who += rowHtml("repeat", "Planning ahead", t.plans.join(" · "));
     who += "</ul></div>";
     h += who;
     return h;
@@ -1444,6 +1453,8 @@
       if (r) r.checked = true;
     }
     if (truthy(params.get("pet")) && $("pet")) $("pet").checked = true;
+    if (truthy(params.get("ridehome")) && $("ride-home")) $("ride-home").checked = true;
+    if (truthy(params.get("student")) && $("student")) $("student").value = "1";
     const pkg = params.get("package");
     if (pkg && P.getPackage(pkg)) {
       const radio = document.querySelector('input[name="package"][value="' + pkg + '"]');
@@ -1482,6 +1493,363 @@
   }
 
   /* ---------- init ---------- */
+  /* ---------- smart concierge: ride home, contextual prompts, seasonal ---------- */
+  const smart = {
+    dismissed: {},
+    plans: [],
+  };
+  const LABELS = {
+    pickup: "Where should I pick you up?",
+    dropoff: "Where to?",
+    pickupHome: "Where I’ll pick you up",
+    dropoffHome: "Where you’re headed home",
+    pickupPh: "Street address or place name",
+    pickupHomePh: "The bar, venue, or restaurant",
+    dropoffPh: "An address, a venue, or AUS",
+    dropoffHomePh: "Home, or wherever the night ends",
+  };
+  // detected silently; the matched words are never shown to the rider
+  const SCHOOL_RE = /\b(elementary|middle school|high school|academy|prep|montessori|isd|school|preschool|daycare|day care|kindergarten|charter)\b/i;
+  const EVENT_RE = /\b(moody|q2 stadium|acl live|bass concert|paramount|cota|circuit of the americas|rainey|6th st|sixth st|6th street|sixth street|west 6th|east 6th|congress|dkr|darrell k royal|long center|germania|stubb'?s?|emo'?s|bar|club|lounge|brewery|winery|rooftop|steakhouse|hotel)\b/i;
+  const DOMAIN_RE = /\bdomain\b/i;
+  const AIRPORT_RE = /\b(aus|airport|bergstrom)\b/i;
+  const NEARBY = [
+    { re: /\b(q2 stadium|domain)\b/i, text: "Nearby: The Domain’s Rock Rose district for dinner or a nightcap." },
+    { re: /\b(cota|circuit of the americas)\b/i, text: "Nearby: Downtown and Rainey St are about 25 minutes back toward town." },
+    { re: /\b(dkr|darrell k royal|bass concert)\b/i, text: "Nearby: Moody Center, Rainey St, or a quiet table on Congress Ave." },
+    { re: /\b(moody|acl live|paramount|rainey|6th st|sixth st|6th street|sixth street|west 6th|east 6th|congress|long center|stubb'?s?|emo'?s|germania)\b/i, text: "Nearby: East 6th, Rainey St, or Congress Ave." },
+  ];
+
+  function rideHome() {
+    const el = $("ride-home");
+    return !!(el && el.checked);
+  }
+  function isStudent() {
+    const el = $("student");
+    return !!(el && el.value === "1");
+  }
+  function addrText(key) {
+    return val(key) || (loc[key] && loc[key].text) || "";
+  }
+  function detectSchool() {
+    return SCHOOL_RE.test(addrText("pickup")) || SCHOOL_RE.test(addrText("dropoff"));
+  }
+  function detectEvent() {
+    const p = addrText("pickup");
+    const d = addrText("dropoff");
+    if (AIRPORT_RE.test(p) || AIRPORT_RE.test(d)) return null;
+    if (SCHOOL_RE.test(p) || SCHOOL_RE.test(d)) return null;
+    // The Domain is home base, so it only counts as a night out when it's the destination
+    if (EVENT_RE.test(d) || DOMAIN_RE.test(d)) return { where: "dropoff", text: d };
+    if (EVENT_RE.test(p)) return { where: "pickup", text: p };
+    return null;
+  }
+  function nearbyLine(text) {
+    for (let i = 0; i < NEARBY.length; i += 1) {
+      if (NEARBY[i].re.test(text)) return NEARBY[i].text;
+    }
+    return "";
+  }
+
+  function syncRideHomeUI() {
+    const on = rideHome();
+    const pl = document.querySelector('label[for="pickup"]');
+    const dl = document.querySelector('label[for="dropoff"]');
+    if (pl) pl.textContent = on ? LABELS.pickupHome : LABELS.pickup;
+    if (dl) dl.textContent = on ? LABELS.dropoffHome : LABELS.dropoff;
+    if ($("pickup")) $("pickup").setAttribute("placeholder", on ? LABELS.pickupHomePh : LABELS.pickupPh);
+    if ($("dropoff")) $("dropoff").setAttribute("placeholder", on ? LABELS.dropoffHomePh : LABELS.dropoffPh);
+    const pill = $("ride-home-pill");
+    if (pill) pill.classList.toggle("is-on", on);
+    const chips = $("late-chips");
+    if (chips) chips.hidden = !on;
+    qsa("#late-chips [data-time]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(val("time") === b.getAttribute("data-time")));
+    });
+    const ret = $("return-toggle");
+    if (ret) ret.hidden = on;
+  }
+
+  function setRadio(name, value) {
+    const r = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
+    if (r) r.checked = true;
+  }
+  function setTimeValue(id, v) {
+    const el = $(id);
+    if (el) el.value = v;
+  }
+  function setRideHome(on) {
+    const el = $("ride-home");
+    if (!el) return;
+    el.checked = on;
+    if (on) {
+      setRadio("package", "");
+      setRadio("hasReturn", "no");
+    }
+  }
+
+  function chipState(key) {
+    switch (key) {
+      case "school-repeat": {
+        const days = selectedWeekdays().slice().sort().join(",");
+        return isRecurring() && days === "1,2,3,4,5";
+      }
+      case "school-return":
+        return isReturn() && val("returnTime") === "15:30";
+      case "school-student":
+        return isStudent();
+      case "event-return":
+        return isReturn() && val("returnTime") === "23:30";
+      case "event-home":
+        return rideHome() && val("time") === "01:30";
+      case "event-home-2330":
+        return rideHome() && val("time") === "23:30";
+      case "event-evening": {
+        const pkg = currentPackage();
+        return !!(pkg && pkg.hours === 6);
+      }
+      default:
+        return false;
+    }
+  }
+
+  function swapEnds() {
+    const p = val("pickup");
+    const d = val("dropoff");
+    const lp = loc.pickup;
+    $("pickup").value = d;
+    $("dropoff").value = p;
+    loc.pickup = loc.dropoff;
+    loc.dropoff = lp;
+  }
+
+  function applyChip(key) {
+    const on = chipState(key);
+    switch (key) {
+      case "school-repeat":
+        if (on) {
+          setRadio("recurring", "no");
+        } else {
+          setRideHome(false);
+          setRadio("package", "");
+          setRadio("recurring", "yes");
+          qsa('input[name="weekday"]').forEach(function (cb) {
+            cb.checked = ["1", "2", "3", "4", "5"].indexOf(cb.value) !== -1;
+          });
+          if (!val("start") && val("date")) setVal("start", val("date"));
+        }
+        break;
+      case "school-return":
+        if (on) {
+          setRadio("hasReturn", "no");
+        } else {
+          setRideHome(false);
+          setRadio("package", "");
+          setRadio("hasReturn", "yes");
+          returnDefaultsApplied = false;
+          setTimeValue("returnTime", "15:30");
+          if (val("date")) setTimeValue("returnDate", val("date"));
+        }
+        break;
+      case "school-student":
+        $("student").value = on ? "" : "1";
+        break;
+      case "event-return":
+        if (on) {
+          setRadio("hasReturn", "no");
+        } else {
+          setRideHome(false);
+          setRadio("package", "");
+          setRadio("hasReturn", "yes");
+          returnDefaultsApplied = false;
+          setTimeValue("returnTime", "23:30");
+          if (val("date")) setTimeValue("returnDate", val("date"));
+        }
+        break;
+      case "event-home":
+      case "event-home-2330": {
+        if (on) {
+          setRideHome(false);
+        } else {
+          const ev = detectEvent();
+          if (ev && ev.where === "dropoff" && !rideHome()) swapEnds();
+          setRideHome(true);
+          setTimeValue("time", key === "event-home" ? "01:30" : "23:30");
+        }
+        break;
+      }
+      case "event-evening":
+        if (on) {
+          setRadio("package", "");
+        } else {
+          setRideHome(false);
+          setRadio("package", "6h");
+        }
+        break;
+      default:
+        break;
+    }
+    syncRideHomeUI();
+    syncConditionalUI();
+    scheduleRoute();
+  }
+
+  function chipHtml(key, label) {
+    const on = chipState(key);
+    return '<button type="button" class="smart-chip" data-chip="' + key + '" aria-pressed="' + on + '">' +
+      '<span class="smart-chip-mark" aria-hidden="true"></span>' + escapeHtml(label) + "</button>";
+  }
+  function cardHtml(id, title, sub, chips, extra) {
+    return '<div class="smart-card" data-card="' + id + '">' +
+      '<button type="button" class="smart-dismiss" data-dismiss="' + id + '" aria-label="Dismiss suggestion">×</button>' +
+      '<p class="smart-eyebrow">A thought</p>' +
+      '<p class="smart-title">' + escapeHtml(title) + "</p>" +
+      (sub ? '<p class="smart-sub">' + escapeHtml(sub) + "</p>" : "") +
+      '<div class="smart-chips">' + chips.join("") + "</div>" +
+      (extra ? '<p class="smart-extra">' + escapeHtml(extra) + "</p>" : "") +
+      "</div>";
+  }
+
+  /* seasonal nudges, by the month of the trip date (or today) */
+  const SEASONS = {
+    holidays: {
+      months: [10, 11],
+      title: "Planning ahead for the holidays?",
+      sub: "Tick anything you’d like me to ask you about. No commitment.",
+      options: ["Ask me about holiday parties", "Christmas / family travel", "New Year’s Eve", "Send me a reminder to book later"],
+    },
+    fall: {
+      months: [9],
+      title: "ACL Fest or race weekend on the calendar?",
+      sub: "Tick anything you’d like me to ask you about. No commitment.",
+      options: ["ACL Fest", "F1 weekend at COTA", "Halloween night", "Send me a reminder to book later"],
+    },
+    valentines: {
+      months: [1],
+      title: "Valentine’s plans coming up?",
+      sub: "Tick anything you’d like me to ask you about. No commitment.",
+      options: ["Valentine’s dinner", "A surprise for someone", "Send me a reminder to book later"],
+    },
+    sxsw: {
+      months: [2],
+      title: "SXSW in town?",
+      sub: "Tick anything you’d like me to ask you about. No commitment.",
+      options: ["SXSW days", "SXSW nights", "Spring break travel", "Send me a reminder to book later"],
+    },
+  };
+  function currentSeason() {
+    const d = val("date") ? P.parseISODateLocal(val("date")) : new Date();
+    const m = d ? d.getMonth() : new Date().getMonth();
+    const keys = Object.keys(SEASONS);
+    for (let i = 0; i < keys.length; i += 1) {
+      if (SEASONS[keys[i]].months.indexOf(m) !== -1) return SEASONS[keys[i]];
+    }
+    return null;
+  }
+  function seasonalHtml() {
+    const s = currentSeason();
+    const extra = smart.plans.filter(function (p) { return !s || s.options.indexOf(p) === -1; });
+    if (!s && !extra.length) return "";
+    if (smart.dismissed.season && !smart.plans.length) return "";
+    const opts = (s ? s.options : []).concat(extra);
+    return '<div class="smart-card smart-season" data-card="season">' +
+      (smart.plans.length ? "" : '<button type="button" class="smart-dismiss" data-dismiss="season" aria-label="Dismiss suggestion">×</button>') +
+      '<p class="smart-eyebrow">Planning ahead</p>' +
+      '<p class="smart-title">' + escapeHtml(s ? s.title : "Planning ahead") + "</p>" +
+      '<p class="smart-sub">' + escapeHtml(s ? s.sub : "") + "</p>" +
+      '<div class="smart-chips">' + opts.map(function (o) {
+        const on = smart.plans.indexOf(o) !== -1;
+        return '<button type="button" class="smart-chip" data-plan="' + escapeHtml(o) + '" aria-pressed="' + on + '">' +
+          '<span class="smart-chip-mark" aria-hidden="true"></span>' + escapeHtml(o) + "</button>";
+      }).join("") + "</div></div>";
+  }
+
+  function renderInto(el, html) {
+    if (!el) return;
+    if (el.getAttribute("data-html") === html) return;
+    const active = document.activeElement;
+    const key = active && el.contains(active)
+      ? (active.getAttribute("data-chip") || active.getAttribute("data-plan") || "")
+      : "";
+    el.innerHTML = html;
+    el.setAttribute("data-html", html);
+    el.hidden = !html;
+    if (key) {
+      const again = el.querySelector('[data-chip="' + key + '"],[data-plan="' + key.replace(/"/g, '\\"') + '"]');
+      if (again) again.focus();
+    }
+  }
+
+  function renderSmart() {
+    syncRideHomeUI();
+    let html = "";
+    if (detectSchool() && !smart.dismissed.school) {
+      html += cardHtml("school", "Looks like a school run.", "Want me to set any of these up?", [
+        chipHtml("school-repeat", "Repeat Mon–Fri (15% off)"),
+        chipHtml("school-return", "Add afternoon pickup"),
+        chipHtml("school-student", "Riding for a student"),
+      ], "");
+    }
+    const ev = detectEvent();
+    if (ev && !smart.dismissed.event) {
+      const chips = rideHome()
+        ? [chipHtml("event-home-2330", "Pick us up at 11:30 PM"), chipHtml("event-home", "Pick us up at 1:30 AM")]
+        : [
+            chipHtml("event-return", "Add an 11:30 PM ride back"),
+            chipHtml("event-home", "Just pick us up at 1:30 AM"),
+            chipHtml("event-evening", "Make it The Evening (6 hrs · $600)"),
+          ];
+      html += cardHtml("event", "Heading out for the evening?", "A few easy ways to plan the ride home.", chips, nearbyLine(ev.text));
+    }
+    renderInto($("smart-prompts"), html);
+    const season = seasonalHtml();
+    renderInto($("seasonal-2"), season);
+    renderInto($("seasonal-4"), season);
+  }
+
+  function bindSmart() {
+    const rh = $("ride-home");
+    if (rh) {
+      rh.addEventListener("change", function () {
+        if (rh.checked) {
+          setRadio("package", "");
+          setRadio("hasReturn", "no");
+        }
+        syncRideHomeUI();
+        syncConditionalUI();
+        scheduleRoute();
+      });
+    }
+    document.addEventListener("click", function (e) {
+      const t = e.target.closest ? e.target.closest("[data-chip],[data-plan],[data-dismiss],[data-time]") : null;
+      if (!t || !$("book-form").contains(t)) return;
+      if (t.hasAttribute("data-chip")) {
+        applyChip(t.getAttribute("data-chip"));
+      } else if (t.hasAttribute("data-plan")) {
+        const p = t.getAttribute("data-plan");
+        const i = smart.plans.indexOf(p);
+        if (i === -1) smart.plans.push(p);
+        else smart.plans.splice(i, 1);
+        renderQuote();
+      } else if (t.hasAttribute("data-dismiss")) {
+        smart.dismissed[t.getAttribute("data-dismiss")] = true;
+        renderQuote();
+      } else if (t.hasAttribute("data-time")) {
+        setTimeValue("time", t.getAttribute("data-time"));
+        renderQuote();
+      }
+    });
+    // the package radios and ride-home are mutually exclusive
+    qsa('input[name="package"]').forEach(function (r) {
+      r.addEventListener("change", function () {
+        if (r.checked && r.value && rh && rh.checked) {
+          rh.checked = false;
+          syncRideHomeUI();
+        }
+      });
+    });
+  }
+
   function init() {
     renderPayments();
     setDateMins();
@@ -1490,6 +1858,7 @@
     bindAutocomplete("returnPickup", "returnPickup-list", "returnPickup");
     bindAutocomplete("returnDropoff", "returnDropoff-list", "returnDropoff");
     prefillFromQuery();
+    bindSmart();
     setupVoice();
     syncConditionalUI();
 

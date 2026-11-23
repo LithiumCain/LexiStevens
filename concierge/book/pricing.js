@@ -47,7 +47,7 @@
       { id: "cash", label: "Cash", timing: "at pickup" },
     ],
     paymentNote:
-      "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. A $50 deposit is arranged by text after you send the request.",
+      "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. Nothing is charged today: after the ride is approved, a Square link for the $50 deposit is sent by text, payable within 24 hours.",
     vehicleSeatsComfortably: 4,
     packageMaxPassengers: 4,
     packages: {

@@ -16,7 +16,7 @@ Airport service is currently **Austin airport drop-offs** only. Pickups at Austi
 
 Best option: send them a prefilled booking link (see query parameters below) and let them review the estimate, agree to the rider policy at https://lexistevens.com/concierge/policy/, then tap “Text this request.”
 
-A booking is not confirmed until ZLS texts the customer back. There is no account and no automated checkout. A $50 deposit is arranged by text after the request is sent.
+A booking is not confirmed until ZLS texts the customer back. There is no account and no automated checkout. Nothing is charged when a request is sent. After ZLS checks the calendar and approves the ride, ZLS texts a Square payment link; the $50 deposit is due within 24 hours to lock in the time slot. Requests go straight to ZLS by text; the booking site does not save them to a database.
 
 Alternatively, the customer (or an assistant) can text 512.534.1855 with a short summary in this format:
 
@@ -29,14 +29,16 @@ From: [short pickup, e.g. "Moody Center · 2001 Robert Dedman Dr, Austin"]
 To: [short dropoff]
 Stops: [free-text stop request, if any]
 When: [Mon, Nov 23, 2026 · 6:50 PM]
-Type: Hourly  (or)  The Evening · 6 hours  (or)  The Full Night · 10 hours
+Type: Hourly  (or)  The Evening · 6 hours  (or)  The Full Night · 10 hours   (add " · Ride home only" for a pickup-only ride home)
 Return: [Mon, Nov 23 · 11:50 PM], [return pickup] → [return dropoff]   (only if there is a return)
 Repeat: [weekdays], [start] – [end], [N] trips   (only for a repeating series)
 Riders: [n]  Bags: [n]   (bags only if any)
+Riding for a student: yes   (only if tagged)
 Pet or service dog: yes   (only if one is coming)
 Pay: [Zelle | Cash App | Venmo | Apple Pay | Tap to Pay | Cash]
 Perfect ride: [optional favorite snack, music, chat level]
 Notes: [optional]
+Planning ahead: [optional seasonal plans the rider ticked, e.g. "New Year’s Eve; Send me a reminder to book later"]
 Estimate (confirmed by text):
   Outbound: [time charge]
   Return: [time charge]
@@ -45,7 +47,7 @@ Estimate (confirmed by text):
   × [N] trips: [subtotal]
   Repeating-trip discount (15%): −[discount]   (hourly series only; not packages)
   Total: [total]
-Deposit: $50.00, arranged by text
+Deposit: $50.00 by Square link after approval (24 hours to pay)
 Policy agreed: yes
 ```
 
@@ -59,7 +61,7 @@ Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be
 - Return trip: quoted as its own leg with the same time and mileage rules, then added to the total. A same-distance Houston return would be another $482.25, or $964.50 round trip. A return or deadhead fee is not otherwise charged.
 - Recurring: 15% off a repeating hourly series (selected weekdays between a start and end date). Example: five 30-minute trips = $297.50, less 15% = $252.88. If a return is also booked, each occurrence includes both legs before the discount. The repeating discount does not apply to night-out packages.
 - Night-out / designated-driver packages (party of up to 4): 6-hour block $600, 10-hour block $950. `packagesIncludeMileage` is false, so $1/mile beyond 20 miles from The Domain is still charged on top of the flat price. Example: a 6-hour package 175 miles from The Domain is $600 + $155 = $755.
-- Deposit: $50, arranged by text after the request. Quotes are estimates, confirmed by text.
+- Deposit: $50. Nothing is charged when a request is sent. After ZLS checks the calendar and approves the ride, ZLS texts a Square payment link; the $50 deposit is due within 24 hours to lock in the time slot. Quotes are estimates, confirmed by text.
 
 
 ## Rider policy
@@ -113,6 +115,8 @@ Prefill the form at https://lexistevens.com/concierge/book/ with query parameter
 | email | Rider email (optional) |
 | pay | zelle, cashapp, venmo, applepay, taptopay, or cash |
 | pet | 1, true, or yes if a pet or service dog is coming |
+| ridehome | 1, true, or yes for "Just the ride home": the rider gets there on their own and is picked up at the venue (pickup = venue, dropoff = home) |
+| student | 1, true, or yes if the ride is for a student |
 | package | Night-out / DD package: 6h or 10h. Omit for hourly |
 | notes | Optional notes |
 | prefs | Optional "Your perfect ride" preferences: favorite snack, music, chat level (included in the text summary as "Perfect ride") |

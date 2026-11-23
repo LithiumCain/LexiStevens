@@ -111,6 +111,7 @@
         </button>
         <p class="voice-status" id="voice-status" role="status" aria-live="polite"></p>
         <p class="book-fine">No account needed. Your estimate updates as you go, and I confirm every detail personally by text. Your ride is reserved when I text you back.</p>
+        <p class="book-fine book-privacy"><span class="privacy-mark" aria-hidden="true"></span>Discreet by design: your request comes straight to me by text and is never saved to a database.</p>
       </div>
     </header>
 
@@ -126,6 +127,15 @@
         <section class="book-step" data-step="1" aria-labelledby="step-1-title">
           <h2 class="step-title" tabindex="-1" id="step-1-title">Where can I take you?</h2>
           <p class="step-lead">Start with your pickup. The first 20 miles from The Domain are included.</p>
+
+          <label class="ride-home-pill" id="ride-home-pill" for="ride-home">
+            <input type="checkbox" id="ride-home" name="rideHome" value="1">
+            <span class="rh-switch" aria-hidden="true"></span>
+            <span class="rh-text">
+              <span class="rh-title">Just the ride home</span>
+              <span class="rh-sub">Heading there on your own? I&rsquo;ll meet you when you&rsquo;re ready to leave.</span>
+            </span>
+          </label>
 
           <fieldset class="package-set">
             <legend>Planning a night out?</legend>
@@ -170,6 +180,8 @@
             <textarea id="stops" name="stops" rows="2" maxlength="400" placeholder="A coffee run, a second address, a quick pickup…"></textarea>
           </div>
 
+          <div class="smart-prompts" id="smart-prompts" aria-live="polite" hidden></div>
+
           <div class="manual-box" id="manual-outbound">
             <button type="button" class="link-btn" id="toggle-manual-out" aria-expanded="false">Prefer to estimate time and miles yourself?</button>
             <div class="manual-fields" id="manual-out-fields" hidden>
@@ -207,8 +219,17 @@
             </div>
           </div>
 
+          <div class="late-chips" id="late-chips" hidden>
+            <p class="field-hint">Ride home only: tap a late-night pickup time, or choose your own above.</p>
+            <div class="smart-chips">
+              <button type="button" class="smart-chip" data-time="23:30" aria-pressed="false"><span class="smart-chip-mark" aria-hidden="true"></span>11:30 PM</button>
+              <button type="button" class="smart-chip" data-time="01:30" aria-pressed="false"><span class="smart-chip-mark" aria-hidden="true"></span>1:30 AM</button>
+            </div>
+            <p class="field-hint">After midnight? Choose the next morning&rsquo;s date, for example Saturday at 1:30 AM for a Friday night out.</p>
+          </div>
+
           <div id="hourly-extras">
-          <fieldset class="toggle-set">
+          <fieldset class="toggle-set" id="return-toggle">
             <legend>Need a ride back?</legend>
             <div class="segment" role="radiogroup" aria-label="Return trip">
               <label class="segment-opt"><input type="radio" name="hasReturn" value="no" checked> No</label>
@@ -294,6 +315,8 @@
             <p class="occurrence-note" id="occurrence-note" role="status"></p>
           </div>
           </div>
+
+          <div class="seasonal" id="seasonal-2" hidden></div>
         </section>
 
         <section class="book-step" data-step="3" hidden aria-labelledby="step-3-title">
@@ -331,7 +354,7 @@
 
           <fieldset class="pay-set">
             <legend>How would you like to pay?</legend>
-            <p class="field-hint" id="pay-note">Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be settled during the ride. A $50 deposit holds your time, arranged by text after you send your request.</p>
+            <p class="field-hint" id="pay-note">Nothing is charged today. Once I&rsquo;ve checked my calendar and approved your ride, I&rsquo;ll text you a Square payment link, and you&rsquo;ll have 24 hours to pay the $50 deposit that locks in your time. For the ride itself, cash is paid at pickup, and Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be settled during the ride.</p>
             <div class="pay-grid" id="pay-grid"></div>
             <div class="pay-handles" id="pay-handles" hidden></div>
           </fieldset>
@@ -341,6 +364,7 @@
             <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Gate codes, flight numbers, a towel for the lake…"></textarea>
           </div>
 
+          <input type="hidden" id="student" name="student" value="">
           <div class="field">
             <label for="prefs">Your perfect ride <span class="optional">(optional)</span></label>
             <p class="field-hint" id="prefs-hint">Favorite snack, music, chat level. (Country and peanut M&amp;Ms? Say less.)</p>
@@ -352,6 +376,15 @@
           <h2 class="step-title" tabindex="-1" id="step-4-title">One last look</h2>
           <p class="step-lead">Look everything over, then text me your request. It becomes a reservation the moment I text you back.</p>
           <div class="itinerary" id="review-card" aria-live="polite"></div>
+          <div class="seasonal" id="seasonal-4" hidden></div>
+          <div class="next-steps">
+            <p class="next-steps-title">Nothing is charged today</p>
+            <ol>
+              <li>Send your request by text.</li>
+              <li>I check my calendar and approve your ride.</li>
+              <li>I text you a Square payment link. Pay the $50 deposit within 24 hours to lock in your time.</li>
+            </ol>
+          </div>
           <label class="check-row" for="policy-agree">
             <input id="policy-agree" name="policyAgree" type="checkbox" value="yes" required>
             <span>I&rsquo;ve read and agree to the <a href="/concierge/policy/" id="policy-link">rider policy</a></span>
@@ -364,11 +397,12 @@
             <a class="zls-btn zls-btn-gold" id="pay-btn" hidden>Hold my ride · $50 deposit</a>
           </div>
           <p class="copy-status" id="copy-status" role="status"></p>
+          <p class="book-privacy book-privacy-send"><span class="privacy-mark" aria-hidden="true"></span>Discreet by design: your request comes straight to me by text and is never saved to a database.</p>
           <details class="sms-preview-box">
             <summary>Preview text message</summary>
             <pre class="sms-preview" id="sms-preview"></pre>
           </details>
-          <p class="book-fine">Quotes are estimates, confirmed by text. A $50 deposit is arranged by text after this request. A booking is confirmed when I text you back.</p>
+          <p class="book-fine">Quotes are estimates, confirmed by text. Nothing is charged today: after I approve your ride, I&rsquo;ll text a Square link for the $50 deposit, payable within 24 hours. Your ride is reserved once the deposit is paid.</p>
         </section>
 
         <p class="form-error" id="form-error" role="alert" hidden></p>
@@ -385,7 +419,7 @@
         <div class="quote-lines" id="quote-lines">
           <p>Add a pickup and a time, and your quote will appear here.</p>
         </div>
-        <p class="book-fine">An estimate, confirmed personally by text. A $50 deposit holds your time, arranged after you send your request.</p>
+        <p class="book-fine">An estimate, confirmed personally by text. Nothing is charged today. Once I approve your ride, I&rsquo;ll text a Square link for the $50 deposit, with 24 hours to pay.</p>
       </aside>
     </div>
   </main>

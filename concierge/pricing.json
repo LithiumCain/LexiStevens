@@ -26,7 +26,7 @@
   "recurringDiscountRate": 0.15,
   "recurringNote": "A 15% discount applies when booking a repeating hourly series (for example school runs on selected weekdays). Example: five 30-minute trips are $297.50, less 15% equals $252.88. The repeating discount does not apply to night-out packages.",
   "deposit": 50,
-  "depositNote": "A $50 deposit is required to book. The deposit is arranged by text after you send the request. A booking is confirmed when ZLS texts back.",
+  "depositNote": "A $50 deposit is required to book. Nothing is charged when a request is sent. After ZLS checks the calendar and approves the ride, ZLS texts a Square payment link; the $50 deposit is due within 24 hours to lock in the time slot. A booking is confirmed when ZLS texts back.",
   "returnFeeEnabled": false,
   "returnFeeAmount": 0,
   "returnFeeNote": "A return or deadhead fee is not currently charged. A customer-requested return trip is quoted as its own leg with the same time and mileage rules and added to the total.",
@@ -58,6 +58,8 @@
       "returnDropoff": "Return dropoff address (defaults to the original pickup)",
       "pay": "Preferred payment method: zelle, cashapp, venmo, applepay, taptopay, or cash",
       "pet": "1, true, or yes if a pet or service dog is coming",
+      "ridehome": "1, true, or yes for Just the ride home: pickup at the venue, dropoff at home",
+      "student": "1, true, or yes if the ride is for a student",
       "package": "Night-out / DD package: 6h or 10h. Omit or leave empty for hourly."
     }
   },
@@ -162,7 +164,7 @@
     "cashapp": "",
     "venmo": ""
   },
-  "paymentNote": "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. A $50 deposit is arranged by text after you send the request. Payment handles are provided by text when needed.",
+  "paymentNote": "Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. Nothing is charged when a request is sent. After ZLS checks the calendar and approves the ride, ZLS texts a Square payment link; the $50 deposit is due within 24 hours to lock in the time slot. Payment handles are provided by text when needed.",
   "paymentLink": "",
   "packages": [
     {
