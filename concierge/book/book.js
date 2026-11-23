@@ -853,47 +853,127 @@
     return ALIASES[key] || null;
   }
 
+  /* ---------- address search: Texas only, biased toward Austin ---------- */
+  // Texas bounding box (west, south, east, north) and The Domain as the bias point.
+  const TX_BOUNDS = { west: -106.65, south: 25.83, east: -93.5, north: 36.5 };
+  const BIAS = { lat: 30.4021, lng: -97.7253 };
+  const CENTRAL_TX_COUNTIES = /\b(travis|williamson|hays|bastrop|caldwell|burnet|blanco|comal|bell|lee)\b/i;
+
+  function inTexasBox(lat, lng) {
+    return isFinite(lat) && isFinite(lng) &&
+      lat >= TX_BOUNDS.south && lat <= TX_BOUNDS.north &&
+      lng >= TX_BOUNDS.west && lng <= TX_BOUNDS.east;
+  }
+  function isTexasState(s) {
+    return /^(texas|tx|us-tx)$/i.test(String(s || "").trim());
+  }
+  function milesFromDomain(lat, lng) {
+    const toRad = Math.PI / 180;
+    const dLat = (lat - BIAS.lat) * toRad;
+    const dLng = (lng - BIAS.lng) * toRad;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(BIAS.lat * toRad) * Math.cos(lat * toRad) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return 3958.8 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+  /** Keep the provider's relevance, but lift Austin / Central Texas hits when scores are close. */
+  function rankTexas(results) {
+    return results
+      .map(function (r, i) {
+        const miles = milesFromDomain(r.lat, r.lng);
+        let score = (r.relevance != null ? r.relevance : 1 - i * 0.08);
+        if (miles <= 35) score += 0.3;
+        else if (miles <= 90) score += 0.15;
+        if (r.county && CENTRAL_TX_COUNTIES.test(r.county)) score += 0.1;
+        return { r: r, score: score, i: i };
+      })
+      .sort(function (a, b) { return b.score - a.score || a.i - b.i; })
+      .map(function (x) { return x.r; })
+      .filter(function (r, i, arr) {
+        // drop near-duplicates (same label)
+        return arr.findIndex(function (o) { return o.label.toLowerCase() === r.label.toLowerCase(); }) === i;
+      })
+      .slice(0, 6);
+  }
+
   async function searchNominatim(query) {
     const url =
-      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&addressdetails=0&countrycodes=us&q=" +
-      encodeURIComponent(query);
+      "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=10&addressdetails=1&countrycodes=us" +
+      "&viewbox=" + [TX_BOUNDS.west, TX_BOUNDS.north, TX_BOUNDS.east, TX_BOUNDS.south].join(",") +
+      "&bounded=1&q=" + encodeURIComponent(query);
     const res = await fetch(url, { headers: { Accept: "application/json" } });
     if (!res.ok) throw new Error("nominatim");
     const data = await res.json();
-    return (data || []).map(function (item) {
-      return { label: item.display_name, lat: Number(item.lat), lng: Number(item.lon) };
-    });
+    return (data || [])
+      .filter(function (item) {
+        const a = item.address || {};
+        const lat = Number(item.lat);
+        const lng = Number(item.lon);
+        const texas = isTexasState(a.state) || isTexasState(a["ISO3166-2-lvl4"]) ||
+          (!a.state && /,\s*Texas,/.test(item.display_name || ""));
+        return texas && (!a.country_code || a.country_code === "us") && inTexasBox(lat, lng);
+      })
+      .map(function (item, i) {
+        const a = item.address || {};
+        return {
+          label: String(item.display_name || "").replace(/,\s*United States$/, ""),
+          lat: Number(item.lat),
+          lng: Number(item.lon),
+          county: a.county || "",
+          relevance: Math.min(1, Number(item.importance) || 0) * 0.6 + (1 - i * 0.05) * 0.4,
+        };
+      });
   }
 
   async function searchPhoton(query) {
     const url =
-      "https://photon.komoot.io/api/?limit=5&lat=30.4022&lon=-97.7253&q=" +
-      encodeURIComponent(query);
+      "https://photon.komoot.io/api/?limit=10&lang=en" +
+      "&lat=" + BIAS.lat + "&lon=" + BIAS.lng +
+      "&bbox=" + [TX_BOUNDS.west, TX_BOUNDS.south, TX_BOUNDS.east, TX_BOUNDS.north].join(",") +
+      "&q=" + encodeURIComponent(query);
     const res = await fetch(url);
     if (!res.ok) throw new Error("photon");
     const data = await res.json();
-    return ((data && data.features) || []).map(function (f) {
-      const props = f.properties || {};
-      const coords = (f.geometry && f.geometry.coordinates) || [];
-      const parts = [props.name, props.street, props.city, props.state, props.postcode].filter(Boolean);
-      return { label: parts.join(", ") || props.name, lat: coords[1], lng: coords[0] };
-    });
+    return ((data && data.features) || [])
+      .filter(function (f) {
+        const props = f.properties || {};
+        const coords = (f.geometry && f.geometry.coordinates) || [];
+        return isTexasState(props.state) &&
+          (!props.countrycode || String(props.countrycode).toUpperCase() === "US") &&
+          inTexasBox(coords[1], coords[0]);
+      })
+      .map(function (f, i) {
+        const props = f.properties || {};
+        const coords = (f.geometry && f.geometry.coordinates) || [];
+        const street = [props.housenumber, props.street].filter(Boolean).join(" ");
+        const name = props.name && props.name !== props.street ? props.name : "";
+        const parts = [name, street, props.city || props.district || props.county, "TX", props.postcode].filter(Boolean);
+        return {
+          label: parts.join(", "),
+          lat: coords[1],
+          lng: coords[0],
+          county: props.county || "",
+          relevance: 1 - i * 0.08,
+        };
+      })
+      .filter(function (r) { return r.label && r.label !== "TX"; });
   }
 
+  // Photon is built for type-ahead and has no 1-request-per-second limit, so it runs first.
+  // Nominatim (rate-limited) is only the fallback when Photon has nothing in Texas or is down.
   async function searchAddress(query) {
     const alias = aliasMatch(query);
     if (alias) return [alias];
     try {
-      await waitForNominatim();
-      const results = await searchNominatim(query);
-      if (results.length) return results;
+      const results = await searchPhoton(query);
+      if (results.length) return rankTexas(results);
     } catch (err) {
       /* fall through */
     }
     try {
-      return await searchPhoton(query);
+      await waitForNominatim();
+      return rankTexas(await searchNominatim(query));
     } catch (err2) {
-      return alias ? [alias] : [];
+      return [];
     }
   }
 
@@ -911,14 +991,24 @@
     let timer = 0;
 
     function close() {
+      emptyNote = "";
       list.hidden = true;
       list.innerHTML = "";
       input.setAttribute("aria-expanded", "false");
       active = -1;
     }
+    let seq = 0;
+    let emptyNote = "";
     function render() {
+      if (!items.length && emptyNote) {
+        list.innerHTML = '<li class="suggest-empty" role="option" aria-disabled="true">' + escapeHtml(emptyNote) + "</li>";
+        list.hidden = false;
+        input.setAttribute("aria-expanded", "true");
+        return;
+      }
       list.innerHTML = items
         .map(function (item, i) {
+          const p = shortAddressParts(item.label);
           return (
             '<li class="suggest-item" role="option" id="' +
             listId +
@@ -926,8 +1016,10 @@
             i +
             '" aria-selected="' +
             (i === active ? "true" : "false") +
-            '">' +
-            escapeHtml(item.label) +
+            '"><span class="suggest-place">' +
+            escapeHtml(p.place || item.label) +
+            "</span>" +
+            (p.detail ? '<span class="suggest-detail">' + escapeHtml(p.detail) + "</span>" : "") +
             "</li>"
           );
         })
@@ -946,17 +1038,21 @@
       loc[locKey] = { text: input.value, lat: null, lng: null };
       const q = input.value.trim();
       clearTimeout(timer);
+      seq += 1;
       if (q.length < 3) {
         close();
         return;
       }
+      const mine = seq;
       timer = setTimeout(function () {
         searchAddress(q).then(function (results) {
+          if (mine !== seq) return; // a newer keystroke is already searching
           items = results;
           active = results.length ? 0 : -1;
+          emptyNote = results.length ? "" : "No Texas addresses found. Try a street, city, or place name.";
           render();
         });
-      }, 400);
+      }, 300);
     });
     input.addEventListener("keydown", function (e) {
       if (list.hidden) return;
@@ -1538,5 +1634,5 @@
     init();
   }
 
-  window.ZLSBook = { parseVoice: parseVoice, summaryText: summaryText, buildQuote: buildQuote };
+  window.ZLSBook = { parseVoice: parseVoice, summaryText: summaryText, buildQuote: buildQuote, searchAddress: searchAddress };
 })();
