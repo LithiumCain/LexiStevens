@@ -23,32 +23,30 @@ Alternatively, the customer (or an assistant) can text 512.534.1855 with a short
 ```
 ZLS booking request
 Name: [name]
-Phone: [phone]
-Email: [email or "—"]
-From: [pickup]
-To: [dropoff]
-Stops: [free-text stop request, or "—"]
-When: [date] at [time]
-Type: Hourly  (or)  6-hour night out / DD  (or)  10-hour night out / DD
-Return: no
-  (or) Return: [return date] at [return time], from [return pickup] to [return dropoff]
-Repeat: no
-  (or) Repeat: [weekdays], [start] to [end], [N] trips
-Riders: [n]  Bags: [n]
-Pet or service dog: yes/no
+Phone: [(512) 555-0100 style]
+Email: [email, if given]
+From: [short pickup, e.g. "Moody Center · 2001 Robert Dedman Dr, Austin"]
+To: [short dropoff]
+Stops: [free-text stop request, if any]
+When: [Mon, Nov 23, 2026 · 6:50 PM]
+Type: Hourly  (or)  The Evening · 6 hours  (or)  The Full Night · 10 hours
+Return: [Mon, Nov 23 · 11:50 PM], [return pickup] → [return dropoff]   (only if there is a return)
+Repeat: [weekdays], [start] – [end], [N] trips   (only for a repeating series)
+Riders: [n]  Bags: [n]   (bags only if any)
+Pet or service dog: yes   (only if one is coming)
 Pay: [Zelle | Cash App | Venmo | Apple Pay | Tap to Pay | Cash]
-Estimate (confirmed by text):
-  Outbound: [time billed] + [mileage] = [leg total]
-  (or) Package: 6-hour night out $600
-  Return: [time billed] + [mileage] = [leg total]
-  Mileage: [billable miles] × $1 = [mileage] (also applies to packages)
-  [N] trips × [per trip] = [subtotal]
-  15% repeating-trip discount: -[discount]  (hourly series only; not packages)
-  Total: [total]
-  Deposit: $50.00, arranged by text
-Policy agreed: yes
-Notes: [optional]
 Perfect ride: [optional favorite snack, music, chat level]
+Notes: [optional]
+Estimate (confirmed by text):
+  Outbound: [time charge]
+  Return: [time charge]
+  (or) The Evening · 6 hours: $600.00
+  Mileage ([X] mi beyond 20): [mileage]   (only if more than $0; also applies to packages)
+  × [N] trips: [subtotal]
+  Repeating-trip discount (15%): −[discount]   (hourly series only; not packages)
+  Total: [total]
+Deposit: $50.00, arranged by text
+Policy agreed: yes
 ```
 
 Cash is paid at pickup. Tap to Pay, Apple Pay, Zelle, Cash App, and Venmo can be paid during the trip. Do not invent or publish payment handles or account names; those are shared by text if needed.

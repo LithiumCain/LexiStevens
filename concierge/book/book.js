@@ -208,56 +208,206 @@
     return (datePart + (timePart ? " at " + timePart : "")).trim();
   }
 
-  function lineForLeg(leg) {
-    if (!leg) return "";
-    const time = P.formatHoursMinutes(leg.durationMinutes) +
-      " billed as " +
-      P.formatHoursMinutes(leg.billedMinutes) +
-      " × " +
-      P.formatMoney(cfg.hourlyRate) +
-      " = " +
-      P.formatMoney(leg.timeCharge);
-    const miles =
-      "Mileage: " +
-      P.formatMiles(leg.billableMiles) +
-      " mi beyond 20 from The Domain × $1 = " +
-      P.formatMoney(leg.mileageCharge);
-    return time + "\n  " + miles + "\n  " + leg.label + " subtotal: " + P.formatMoney(leg.total);
+  /* ---------- friendly formatting ---------- */
+  const STREET_ABBR = {
+    drive: "Dr", street: "St", avenue: "Ave", boulevard: "Blvd", road: "Rd", lane: "Ln",
+    parkway: "Pkwy", highway: "Hwy", court: "Ct", place: "Pl", circle: "Cir", trail: "Trl",
+    terrace: "Ter", square: "Sq", expressway: "Expy", freeway: "Fwy", way: "Way", loop: "Loop",
+    cove: "Cv", bend: "Bnd", crossing: "Xing", pass: "Pass", path: "Path", run: "Run",
+  };
+  const STREET_RE = /\b(drive|dr|street|st|avenue|ave|boulevard|blvd|road|rd|lane|ln|parkway|pkwy|highway|hwy|court|ct|place|pl|circle|cir|trail|trl|terrace|ter|way|loop|cove|cv|bend|crossing|expressway|freeway|run|path|pass)\.?$/i;
+  const STATE_RE = /^(texas|tx)(\s+\d{5}(-\d{4})?)?$/i;
+  const ZIP_RE = /^\d{5}(-\d{4})?$/;
+  const COUNTRY_RE = /^(united states( of america)?|usa|us)$/i;
+  const COUNTY_RE = /\bcounty$/i;
+
+  function abbrStreet(s) {
+    return s.replace(/\b([A-Za-z]+)\b\.?$/, function (m, w) {
+      const a = STREET_ABBR[w.toLowerCase()];
+      return a || m;
+    });
   }
 
-  function quoteLines(q) {
-    const lines = [];
-    if (!q || !q.ready) {
-      return ["Add a pickup and a time, and your quote will appear here."];
+  /** "Moody Center, 2001, Robert Dedman Drive, Austin, Travis County, Texas, 78712, United States"
+   *  -> { place: "Moody Center", detail: "2001 Robert Dedman Dr, Austin" } */
+  function shortAddressParts(text) {
+    const raw = String(text || "").trim();
+    if (!raw) return { place: "", detail: "" };
+    let parts = raw.split(",").map(function (p) { return p.trim(); }).filter(Boolean);
+    const seen = {};
+    parts = parts.filter(function (p) {
+      const k = p.toLowerCase();
+      if (seen[k]) return false;
+      seen[k] = true;
+      return true;
+    });
+    // index of first "region" part (county / state / zip / country): the city sits just before it
+    let regionAt = parts.length;
+    for (let i = 0; i < parts.length; i += 1) {
+      if (COUNTY_RE.test(parts[i]) || STATE_RE.test(parts[i]) || ZIP_RE.test(parts[i]) || COUNTRY_RE.test(parts[i])) {
+        regionAt = i;
+        break;
+      }
     }
-    if (q.isPackage && q.package) {
-      lines.push(q.package.shortLabel + "  " + P.formatMoney(q.packageCharge));
-      lines.push(
-        "Mileage: " +
-          P.formatMiles(q.billableMiles) +
-          " mi beyond 20 from The Domain × $1 = " +
-          P.formatMoney(q.mileageCharge)
-      );
+    const zipPart = parts.filter(function (p) { return ZIP_RE.test(p); })[0] ||
+      ((parts.filter(function (p) { return STATE_RE.test(p); })[0] || "").match(/\d{5}/) || [""])[0];
+    const head = parts.slice(0, regionAt);
+    if (!head.length) return { place: raw, detail: "" };
+    // merge a bare house number with the following street
+    const merged = [];
+    for (let i = 0; i < head.length; i += 1) {
+      if (/^\d+[A-Za-z]?$/.test(head[i]) && head[i + 1] && !/^\d/.test(head[i + 1])) {
+        merged.push(head[i] + " " + head[i + 1]);
+        i += 1;
+      } else if (merged.length && /^\d+[A-Za-z]?$/.test(head[i])) {
+        continue; // stray duplicate number
+      } else {
+        merged.push(head[i]);
+      }
+    }
+    let streetIdx = -1;
+    for (let i = 0; i < merged.length; i += 1) {
+      if (/^\d+\s+\S/.test(merged[i]) || STREET_RE.test(merged[i])) {
+        streetIdx = i;
+        break;
+      }
+    }
+    let place = "";
+    let street = "";
+    if (streetIdx === -1) {
+      place = merged[0];
     } else {
-      if (q.outbound) {
-        lines.push(q.outbound.label);
-        lineForLeg(q.outbound).split("\n").forEach(function (part) {
-          lines.push(part.trim());
-        });
-      }
-      if (q.returnLeg) {
-        lines.push(q.returnLeg.label);
-        lineForLeg(q.returnLeg).split("\n").forEach(function (part) {
-          lines.push(part.trim());
-        });
-      }
-      if (q.recurring && q.occurrences > 1) {
-        lines.push(q.occurrences + " trips × " + P.formatMoney(q.perTrip) + " = " + P.formatMoney(q.subtotal));
-        lines.push("15% repeating-trip discount: −" + P.formatMoney(q.discount));
-      }
+      street = abbrStreet(merged[streetIdx]);
+      if (streetIdx > 0) place = merged[0];
     }
-    lines.push("Total " + P.formatMoney(q.total));
+    let city = "";
+    if (merged.length > 1) {
+      const last = merged[merged.length - 1];
+      if (last !== merged[0] && merged.length - 1 !== streetIdx) city = last;
+    }
+    if (!place && !street) place = merged[0];
+    if (!place && !city && zipPart) city = zipPart;
+    const detail = [street, city].filter(Boolean).join(", ");
+    if (!place) return { place: detail, detail: "" };
+    return { place: place, detail: detail };
+  }
+  function shortAddress(text) {
+    const p = shortAddressParts(text);
+    return p.detail ? p.place + " · " + p.detail : p.place;
+  }
+
+  function formatPhone(s) {
+    const raw = String(s || "").trim();
+    let d = raw.replace(/\D/g, "");
+    if (d.length === 11 && d.charAt(0) === "1") d = d.slice(1);
+    if (d.length === 10) return "(" + d.slice(0, 3) + ") " + d.slice(3, 6) + "-" + d.slice(6);
+    return raw;
+  }
+
+  function niceName(s) {
+    return String(s || "").trim().replace(/\s+/g, " ").split(" ").map(function (w) {
+      if (!w) return w;
+      const plain = w === w.toLowerCase() || w === w.toUpperCase();
+      return w.split(/([-'’])/).map(function (seg) {
+        if (/^[-'’]$/.test(seg) || !seg) return seg;
+        return seg.charAt(0).toUpperCase() + (plain ? seg.slice(1).toLowerCase() : seg.slice(1));
+      }).join("");
+    }).join(" ");
+  }
+
+  function formatWhenShort(dateISO, timeHHMM, withYear) {
+    const d = dateISO ? P.parseISODateLocal(dateISO) : null;
+    const opts = { weekday: "short", month: "short", day: "numeric" };
+    if (withYear) opts.year = "numeric";
+    const datePart = d ? d.toLocaleDateString("en-US", opts) : "";
+    let timePart = "";
+    if (timeHHMM) {
+      const parts = timeHHMM.split(":");
+      const dt = new Date(2000, 0, 1, Number(parts[0]) || 0, Number(parts[1]) || 0);
+      timePart = dt.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+    }
+    return [datePart, timePart].filter(Boolean).join(" · ");
+  }
+
+  function packageDisplayName(pkg) {
+    if (!pkg) return "";
+    if (pkg.id === "6h" || pkg.hours === 6) return "The Evening · 6 hours";
+    if (pkg.id === "10h" || pkg.hours === 10) return "The Full Night · 10 hours";
+    return pkg.shortLabel || pkg.label;
+  }
+
+  function addMoney(a, b) {
+    return Math.round((Number(a) || 0) * 100 + (Number(b) || 0) * 100) / 100;
+  }
+
+  /* ---------- estimate receipt ---------- */
+  function receiptRows(q) {
+    const rows = [];
+    if (q.isPackage && q.package) {
+      rows.push([packageDisplayName(q.package), q.packageCharge]);
+      if (q.mileageCharge > 0) {
+        rows.push(["Mileage (" + P.formatMiles(q.billableMiles) + " mi beyond 20)", q.mileageCharge]);
+      }
+      return rows;
+    }
+    if (q.outbound) rows.push(["Outbound", q.outbound.timeCharge]);
+    if (q.returnLeg) rows.push(["Return", q.returnLeg.timeCharge]);
+    const miles = addMoney(q.outbound ? q.outbound.billableMiles : 0, q.returnLeg ? q.returnLeg.billableMiles : 0);
+    const mileage = addMoney(q.outbound ? q.outbound.mileageCharge : 0, q.returnLeg ? q.returnLeg.mileageCharge : 0);
+    if (mileage > 0) rows.push(["Mileage (" + P.formatMiles(miles) + " mi beyond 20)", mileage]);
+    if (q.returnCharge > 0) rows.push(["Return fee", q.returnCharge]);
+    if (q.recurring && q.occurrences > 1) {
+      rows.push({ sub: true, label: "× " + q.occurrences + " trips", amount: q.subtotal });
+      rows.push({ discount: true, label: "Repeating-trip discount (15%)", amount: q.discount });
+    }
+    return rows;
+  }
+
+  function legMath(leg, name) {
+    return name + ": " + P.formatHoursMinutes(leg.durationMinutes) + " → billed " +
+      P.formatHoursMinutes(leg.billedMinutes) + " at " + P.formatMoney(cfg.hourlyRate).replace(/\.00$/, "") + "/hr = " +
+      P.formatMoney(leg.timeCharge);
+  }
+
+  function mathLines(q) {
+    const lines = [];
+    if (q.isPackage && q.package) {
+      lines.push("Flat " + P.formatMoney(q.packageCharge) + " for " + q.package.hours + " hours, a party of up to " + cfg.packageMaxPassengers + ".");
+      lines.push(q.mileageCharge > 0
+        ? "Farthest point is " + P.formatMiles(q.farthestMilesFromDomain) + " mi from The Domain; the first 20 are included, then $1 a mile."
+        : "The first 20 miles from The Domain are included, then $1 a mile.");
+      lines.push("The repeating-trip discount doesn’t apply to packages.");
+      return lines;
+    }
+    if (q.outbound) lines.push(legMath(q.outbound, "Outbound"));
+    if (q.returnLeg) lines.push(legMath(q.returnLeg, "Return"));
+    lines.push("30-minute minimum, then 15-minute blocks with a 5-minute grace.");
+    const mileage = addMoney(q.outbound ? q.outbound.mileageCharge : 0, q.returnLeg ? q.returnLeg.mileageCharge : 0);
+    lines.push("The first 20 miles from The Domain are included, then $1 a mile.");
+    if (q.recurring && q.occurrences > 1) {
+      lines.push(q.occurrences + " trips × " + P.formatMoney(q.perTrip) + " = " + P.formatMoney(q.subtotal) + ", then 15% off (−" + P.formatMoney(q.discount) + ").");
+    }
     return lines;
+  }
+
+  function receiptHtml(q) {
+    if (!q || !q.ready) {
+      return '<p class="rc-empty">Add a pickup and a time, and your quote will appear here.</p>';
+    }
+    const rows = receiptRows(q).map(function (r) {
+      if (Array.isArray(r)) {
+        return '<div class="rc-row"><dt>' + escapeHtml(r[0]) + "</dt><dd>" + P.formatMoney(r[1]) + "</dd></div>";
+      }
+      if (r.discount) {
+        return '<div class="rc-row rc-discount"><dt>' + escapeHtml(r.label) + "</dt><dd>−" + P.formatMoney(r.amount) + "</dd></div>";
+      }
+      return '<div class="rc-row rc-sub"><dt>' + escapeHtml(r.label) + "</dt><dd>" + P.formatMoney(r.amount) + "</dd></div>";
+    }).join("");
+    const math = mathLines(q).map(function (l) { return "<li>" + escapeHtml(l) + "</li>"; }).join("");
+    return '<dl class="rc-rows">' + rows + "</dl>" +
+      '<div class="rc-total"><span>Total</span><strong>' + P.formatMoney(q.total) + "</strong></div>" +
+      '<p class="rc-deposit">' + P.formatMoney(cfg.deposit).replace(/\.00$/, "") + " deposit holds your time</p>" +
+      '<details class="rc-math"><summary>How this is calculated</summary><ul>' + math + "</ul></details>";
   }
 
   function renderQuote() {
@@ -266,11 +416,20 @@
     const totalText = q && q.ready ? P.formatMoney(q.total) : "—";
     $("quote-total").textContent = totalText;
     $("sticky-total").textContent = totalText;
-    const lines = quoteLines(q);
-    $("quote-lines").innerHTML = "<ul>" + lines.map(function (line) {
-      const strong = /Total /.test(line) || /deposit/i.test(line);
-      return "<li" + (strong ? ' class="ql-strong"' : "") + ">" + escapeHtml(line) + "</li>";
-    }).join("") + "</ul>";
+    const html = receiptHtml(q);
+    const keepOpen = function (root) {
+      const d = root && root.querySelector("details.rc-math");
+      return !!(d && d.open);
+    };
+    [$("quote-lines"), $("sticky-receipt")].forEach(function (el) {
+      if (!el) return;
+      const open = keepOpen(el);
+      el.innerHTML = html;
+      if (open) {
+        const d = el.querySelector("details.rc-math");
+        if (d) d.open = true;
+      }
+    });
     if (step === 4) renderReview();
     updateHandoff();
     updateOccurrences();
@@ -304,88 +463,183 @@
     }
   }
 
-  function summaryText() {
-    const q = quote || buildQuote();
-    const pay = P.paymentMethodById(selectedPay());
+  /* ---------- trip details (shared by the card and the text) ---------- */
+  function tripDetails() {
     const pkg = currentPackage();
-    const lines = [];
-    lines.push("ZLS booking request");
-    lines.push("Name: " + (val("name") || "—"));
-    lines.push("Phone: " + (val("phone") || "—"));
-    lines.push("Email: " + (val("email") || "—"));
-    lines.push("From: " + (val("pickup") || "—"));
-    lines.push("To: " + (val("dropoff") || "—"));
-    lines.push("Stops: " + (val("stops") || "—"));
-    lines.push("When: " + formatWhen(val("date"), val("time")));
-    lines.push("Type: " + (pkg ? pkg.label : "Hourly"));
+    const pay = P.paymentMethodById(selectedPay());
+    const d = {
+      pkg: pkg,
+      name: niceName(val("name")),
+      phone: formatPhone(val("phone")),
+      email: val("email"),
+      pickup: val("pickup"),
+      dropoff: val("dropoff"),
+      stops: val("stops"),
+      date: val("date"),
+      time: val("time"),
+      pax: Number(val("pax") || 1) || 1,
+      bags: Number(val("bags") || 0) || 0,
+      pet: !!($("pet") && $("pet").checked),
+      pay: pay ? pay.label : "",
+      payTiming: pay ? pay.timing : "",
+      prefs: val("prefs"),
+      notes: val("notes"),
+      ret: null,
+      repeat: null,
+    };
     if (!pkg && isReturn()) {
-      lines.push(
-        "Return: " +
-          formatWhen(val("returnDate") || val("date"), val("returnTime")) +
-          ", from " +
-          (val("returnPickup") || val("dropoff") || "—") +
-          " to " +
-          (val("returnDropoff") || val("pickup") || "—")
-      );
-    } else {
-      lines.push("Return: no");
+      d.ret = {
+        date: val("returnDate") || val("date"),
+        time: val("returnTime"),
+        from: val("returnPickup") || val("dropoff"),
+        to: val("returnDropoff") || val("pickup"),
+      };
     }
     if (!pkg && isRecurring()) {
-      const days = selectedWeekdays().map(function (d) { return WEEKDAY_NAMES[d]; }).join(", ");
-      const n = (q && q.occurrences) || 1;
-      lines.push(
-        "Repeat: " +
-          (days || "—") +
-          ", " +
-          (val("start") || val("date") || "—") +
-          " to " +
-          (val("end") || "—") +
-          ", " +
-          n +
-          (n === 1 ? " trip" : " trips")
-      );
-    } else {
-      lines.push("Repeat: no");
+      const q = quote || buildQuote();
+      d.repeat = {
+        days: selectedWeekdays().map(function (x) { return WEEKDAY_NAMES[x]; }).join(", "),
+        start: val("start") || val("date"),
+        end: val("end"),
+        n: (q && q.occurrences) || 1,
+      };
     }
-    lines.push("Riders: " + (val("pax") || "1") + "  Bags: " + (val("bags") || "0"));
-    lines.push("Pet or service dog: " + ($("pet") && $("pet").checked ? "yes" : "no"));
-    lines.push("Pay: " + (pay ? pay.label : "—"));
-    lines.push("Estimate (confirmed by text):");
+    return d;
+  }
+
+  function shortDate(iso) {
+    const d = iso ? P.parseISODateLocal(iso) : null;
+    return d ? d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "";
+  }
+
+  function summaryText() {
+    const q = quote || buildQuote();
+    const t = tripDetails();
+    const lines = ["ZLS booking request"];
+    if (t.name) lines.push("Name: " + t.name);
+    if (t.phone) lines.push("Phone: " + t.phone);
+    if (t.email) lines.push("Email: " + t.email);
+    if (t.pickup) lines.push("From: " + shortAddress(t.pickup));
+    if (t.dropoff) lines.push("To: " + shortAddress(t.dropoff));
+    if (t.stops) lines.push("Stops: " + t.stops);
+    const when = formatWhenShort(t.date, t.time, true);
+    if (when) lines.push("When: " + when);
+    lines.push("Type: " + (t.pkg ? packageDisplayName(t.pkg) : "Hourly"));
+    if (t.ret) {
+      lines.push(
+        "Return: " + formatWhenShort(t.ret.date, t.ret.time, false) +
+          ", " + shortAddress(t.ret.from) + " → " + shortAddress(t.ret.to)
+      );
+    }
+    if (t.repeat) {
+      lines.push(
+        "Repeat: " + (t.repeat.days || "—") + ", " + shortDate(t.repeat.start) + " – " + shortDate(t.repeat.end) +
+          ", " + t.repeat.n + (t.repeat.n === 1 ? " trip" : " trips")
+      );
+    }
+    lines.push("Riders: " + t.pax + (t.bags ? "  Bags: " + t.bags : ""));
+    if (t.pet) lines.push("Pet or service dog: yes");
+    if (t.pay) lines.push("Pay: " + t.pay);
+    if (t.prefs) lines.push("Perfect ride: " + t.prefs);
+    if (t.notes) lines.push("Notes: " + t.notes);
     if (q && q.ready) {
-      if (q.isPackage && q.package) {
-        lines.push("  Package: " + q.package.shortLabel + " " + P.formatMoney(q.packageCharge));
-        lines.push(
-          "  Mileage: " +
-            P.formatMiles(q.billableMiles) +
-            " mi × $1 = " +
-            P.formatMoney(q.mileageCharge)
-        );
-      } else {
-        if (q.outbound) {
-          lines.push("  Outbound: " + P.formatHoursMinutes(q.outbound.billedMinutes) + " + " + P.formatMoney(q.outbound.mileageCharge) + " mileage = " + P.formatMoney(q.outbound.total));
-        }
-        if (q.returnLeg) {
-          lines.push("  Return: " + P.formatHoursMinutes(q.returnLeg.billedMinutes) + " + " + P.formatMoney(q.returnLeg.mileageCharge) + " mileage = " + P.formatMoney(q.returnLeg.total));
-        }
-        if (q.recurring && q.occurrences > 1) {
-          lines.push("  " + q.occurrences + " trips × " + P.formatMoney(q.perTrip) + " = " + P.formatMoney(q.subtotal));
-          lines.push("  15% repeating-trip discount: -" + P.formatMoney(q.discount));
-        }
-      }
+      lines.push("Estimate (confirmed by text):");
+      receiptRows(q).forEach(function (r) {
+        if (Array.isArray(r)) lines.push("  " + r[0] + ": " + P.formatMoney(r[1]));
+        else if (r.discount) lines.push("  " + r.label + ": −" + P.formatMoney(r.amount));
+        else lines.push("  " + r.label + ": " + P.formatMoney(r.amount));
+      });
       lines.push("  Total: " + P.formatMoney(q.total));
     } else {
-      lines.push("  Total: to be confirmed");
+      lines.push("Estimate: to be confirmed");
     }
-    lines.push("  Deposit: $50.00, arranged by text");
+    lines.push("Deposit: " + P.formatMoney(cfg.deposit) + ", arranged by text");
     lines.push("Policy agreed: " + (policyAgreed() ? "yes" : "no"));
-    if (val("notes")) lines.push("Notes: " + val("notes"));
-    if (val("prefs")) lines.push("Perfect ride: " + val("prefs"));
     return lines.join("\n");
+  }
+
+  /* ---------- review card ---------- */
+  const ICONS = {
+    riders: '<path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 10a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-4-5.6"/>',
+    bags: '<rect x="5" y="7" width="14" height="13" rx="2"/><path d="M9 7V4h6v3M9 20v1M15 20v1"/>',
+    pet: '<circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M8 17c0-3 2-5 4-5s4 2 4 5c0 2-2 2.5-4 2.5S8 19 8 17Z"/>',
+    pay: '<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/>',
+    prefs: '<path d="M12 3l2.6 5.5 6 .8-4.4 4.2 1.1 6L12 16.6 6.7 19.5l1.1-6L3.4 9.3l6-.8Z"/>',
+    notes: '<path d="M5 4h10l4 4v12H5Z"/><path d="M15 4v4h4M8 12h8M8 16h6"/>',
+    person: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    phone: '<path d="M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 4 5a2 2 0 0 1 2-2Z"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    repeat: '<path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/>',
+  };
+  function icon(name) {
+    return '<svg class="iti-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + ICONS[name] + "</svg>";
+  }
+  function stopHtml(kind, label, text) {
+    const p = shortAddressParts(text);
+    return '<li class="iti-stop iti-' + kind + '"><span class="iti-dot" aria-hidden="true"></span>' +
+      '<span class="iti-k">' + escapeHtml(label) + "</span>" +
+      '<span class="iti-place">' + escapeHtml(p.place || text) + "</span>" +
+      (p.detail ? '<span class="iti-detail">' + escapeHtml(p.detail) + "</span>" : "") + "</li>";
+  }
+  function freeStopHtml(text) {
+    return '<li class="iti-stop iti-via"><span class="iti-dot" aria-hidden="true"></span>' +
+      '<span class="iti-k">Along the way</span><span class="iti-place iti-free">' + escapeHtml(text) + "</span></li>";
+  }
+  function secHead(title, goto) {
+    return '<div class="iti-head"><h3 class="iti-title">' + escapeHtml(title) + "</h3>" +
+      '<button type="button" class="iti-edit" data-goto="' + goto + '">Edit<span class="visually-hidden"> ' + escapeHtml(title.toLowerCase()) + "</span></button></div>";
+  }
+  function rowHtml(ic, main, sub) {
+    return '<li class="iti-row">' + icon(ic) + '<span class="iti-row-main">' + escapeHtml(main) + "</span>" +
+      (sub ? '<span class="iti-row-sub">' + escapeHtml(sub) + "</span>" : "") + "</li>";
+  }
+
+  function reviewHtml() {
+    const t = tripDetails();
+    let h = "";
+    // the trip
+    let trip = '<div class="iti-sec">' + secHead("Your trip", 1);
+    const when = formatWhenShort(t.date, t.time, false);
+    trip += '<p class="iti-when">' + escapeHtml(when || "Date and time to choose") + "</p>";
+    trip += '<p class="iti-type">' + escapeHtml(t.pkg ? packageDisplayName(t.pkg) + " · up to " + cfg.packageMaxPassengers + " riders" : "Hourly · $119/hour") + "</p>";
+    trip += '<ol class="iti-line">';
+    if (t.pickup) trip += stopHtml("from", "Pickup", t.pickup);
+    if (t.stops) trip += freeStopHtml(t.stops);
+    if (t.dropoff) trip += stopHtml("to", "Drop-off", t.dropoff);
+    trip += "</ol>";
+    if (t.repeat) {
+      trip += '<ul class="iti-rows">' + rowHtml("repeat",
+        "Repeats " + (t.repeat.days || ""),
+        shortDate(t.repeat.start) + " – " + shortDate(t.repeat.end) + " · " + t.repeat.n + (t.repeat.n === 1 ? " trip" : " trips") + " · 15% off") + "</ul>";
+    }
+    trip += "</div>";
+    h += trip;
+    if (t.ret) {
+      h += '<div class="iti-sec iti-return">' + secHead("Ride back", 2) +
+        '<p class="iti-when">' + escapeHtml(formatWhenShort(t.ret.date, t.ret.time, false)) + "</p>" +
+        '<ol class="iti-line iti-line-sm">' + stopHtml("from", "Pickup", t.ret.from) + stopHtml("to", "Drop-off", t.ret.to) + "</ol></div>";
+    }
+    // riders
+    let who = '<div class="iti-sec">' + secHead("Who’s riding", 3) + '<ul class="iti-rows">';
+    if (t.name) who += rowHtml("person", t.name, [t.phone, t.email].filter(Boolean).join(" · "));
+    who += rowHtml("riders", t.pax + (t.pax === 1 ? " rider" : " riders"), "");
+    if (t.bags) who += rowHtml("bags", t.bags + (t.bags === 1 ? " bag" : " bags"), "I’ll handle them");
+    if (t.pet) who += rowHtml("pet", "A pet or service dog is coming", "They’re welcome");
+    if (t.pay) who += rowHtml("pay", t.pay, t.payTiming ? "Paid " + t.payTiming : "");
+    if (t.prefs) who += rowHtml("prefs", "Your perfect ride", t.prefs);
+    if (t.notes) who += rowHtml("notes", "Notes", t.notes);
+    who += "</ul></div>";
+    h += who;
+    return h;
   }
 
   function renderReview() {
     const card = $("review-card");
-    if (card) card.textContent = summaryText();
+    if (card) card.innerHTML = reviewHtml();
+    const pre = $("sms-preview");
+    if (pre) pre.textContent = summaryText();
+    const rr = $("review-receipt");
+    if (rr) rr.innerHTML = receiptHtml(quote || buildQuote());
   }
 
   function smsHref(body) {
@@ -406,6 +660,12 @@
       sms.classList.toggle("is-disabled", !agreed);
       sms.setAttribute("aria-disabled", agreed ? "false" : "true");
     }
+    const hint = $("policy-hint");
+    if (hint) hint.hidden = agreed;
+    const sticky = $("sticky-btn");
+    if (sticky) sticky.classList.toggle("is-waiting", step === 4 && !agreed);
+    const pre = $("sms-preview");
+    if (pre && step === 4) pre.textContent = body;
     const payBtn = $("pay-btn");
     if (payBtn) {
       if (cfg.paymentLink) {
@@ -450,6 +710,7 @@
     const sticky = $("sticky-btn");
     if (sticky) sticky.textContent = step === 4 ? "Send my request by text" : "Continue";
     if (step === 4) renderReview();
+    updateHandoff();
     showError("");
     const title = $("step-" + step + "-title");
     if (title) title.focus({ preventScroll: true });
@@ -1203,6 +1464,21 @@
         $("policy-agree").focus();
       }
     });
+    $("review-card").addEventListener("click", function (e) {
+      const btn = e.target.closest ? e.target.closest(".iti-edit") : null;
+      if (!btn) return;
+      goTo(Number(btn.getAttribute("data-goto")) || 1);
+    });
+    const stickyToggle = $("sticky-toggle");
+    if (stickyToggle) {
+      stickyToggle.addEventListener("click", function () {
+        const box = $("sticky-receipt");
+        const open = box.hidden;
+        box.hidden = !open;
+        this.setAttribute("aria-expanded", String(open));
+        $("sticky-bar").classList.toggle("is-open", open);
+      });
+    }
     $("policy-agree").addEventListener("change", function () {
       showError("");
       updateHandoff();

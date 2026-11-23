@@ -959,3 +959,458 @@ fieldset legend {
     padding: 1.6rem 1.75rem 1.75rem;
   }
 }
+
+/* =====================================================
+   REVIEW STEP — itinerary card + receipt
+   ===================================================== */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.itinerary {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0 0 1.25rem;
+}
+
+.iti-sec {
+  position: relative;
+  padding: 1.1rem 1.1rem 1.15rem;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, #d8b56a 0%, #a07a52 45%, #f1d999 78%, #d8b56a 100%) top / 100% 1px no-repeat,
+    radial-gradient(ellipse 70% 60% at 100% 0%, rgba(170, 184, 196, 0.09), transparent 70%),
+    linear-gradient(160deg, rgba(36, 56, 77, 0.85) 0%, rgba(22, 35, 49, 0.8) 100%);
+  border: 1px solid rgba(216, 181, 106, 0.28);
+  border-top-color: transparent;
+  box-shadow: 0 18px 36px -24px rgba(5, 12, 22, 0.9);
+}
+
+.iti-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.iti-title {
+  margin: 0;
+  font-family: Outfit, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #dcc08a;
+}
+
+.iti-edit {
+  background: none;
+  border: 0;
+  padding: 0.35rem 0.1rem;
+  min-height: 32px;
+  font-family: Outfit, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: #ecd6a4;
+  text-decoration: underline;
+  text-decoration-color: rgba(236, 214, 164, 0.45);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.iti-edit:hover,
+.iti-edit:focus-visible {
+  color: #fff;
+  text-decoration-color: #d8b56a;
+  outline: none;
+}
+.iti-edit:focus-visible {
+  box-shadow: 0 0 0 2px #dcc08a;
+  border-radius: 2px;
+}
+
+.iti-when {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.iti-type {
+  margin: 0.15rem 0 0.9rem;
+  font-size: 0.85rem;
+  color: rgba(232, 224, 212, 0.82);
+  font-weight: 300;
+}
+
+/* gold timeline */
+.iti-line {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.iti-stop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 1rem 1.75rem;
+}
+.iti-stop:last-child {
+  padding-bottom: 0;
+}
+.iti-stop::before {
+  content: "";
+  position: absolute;
+  left: 0.42rem;
+  top: 0.85rem;
+  bottom: -0.25rem;
+  width: 1.5px;
+  background: linear-gradient(180deg, #f1d999, #a07a52);
+  opacity: 0.85;
+}
+.iti-stop:last-child::before {
+  display: none;
+}
+.iti-dot {
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f6e4b6 0%, #d8b56a 45%, #a07a52 100%);
+  box-shadow: 0 0 0 3px rgba(216, 181, 106, 0.18), 0 0 10px rgba(241, 217, 153, 0.35);
+}
+.iti-to .iti-dot {
+  background: #1f2f40;
+  border: 2px solid #d8b56a;
+}
+.iti-via .iti-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  left: 0.18rem;
+  top: 0.45rem;
+  background: #d8b56a;
+  box-shadow: none;
+}
+.iti-k {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(220, 192, 138, 0.95);
+}
+.iti-place {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.28rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #fff;
+  overflow-wrap: anywhere;
+}
+.iti-free {
+  font-family: Outfit, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--zls-cream);
+}
+.iti-detail {
+  font-size: 0.9rem;
+  color: rgba(232, 224, 212, 0.85);
+  font-weight: 300;
+  overflow-wrap: anywhere;
+}
+.iti-line-sm .iti-place {
+  font-size: 1.12rem;
+}
+.iti-return .iti-when {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+}
+
+/* icon rows */
+.iti-rows {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+.iti-sec > .iti-line + .iti-rows {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(216, 181, 106, 0.18);
+}
+.iti-row {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr;
+  column-gap: 0.65rem;
+  align-items: start;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(216, 181, 106, 0.12);
+}
+.iti-row:last-child {
+  border-bottom: 0;
+}
+.iti-ico {
+  grid-row: span 2;
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-top: 0.1rem;
+  fill: none;
+  stroke: #dcc08a;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.iti-row-main {
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.iti-row-sub {
+  color: rgba(232, 224, 212, 0.82);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  font-weight: 300;
+  overflow-wrap: anywhere;
+}
+
+.policy-hint {
+  margin: -0.5rem 0 1rem;
+  font-size: 0.88rem;
+  color: #ecd6a4;
+  font-weight: 300;
+}
+.page-book .zls-btn.is-waiting {
+  opacity: 0.55;
+  filter: saturate(0.6);
+}
+
+/* text preview */
+.sms-preview-box {
+  margin: 0.25rem 0 1rem;
+}
+.sms-preview-box summary,
+.rc-math summary {
+  cursor: pointer;
+  color: #ecd6a4;
+  font-size: 0.85rem;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 36px;
+}
+.sms-preview-box summary::-webkit-details-marker,
+.rc-math summary::-webkit-details-marker {
+  display: none;
+}
+.sms-preview-box summary::before,
+.rc-math summary::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid #d8b56a;
+  border-bottom: 1.5px solid #d8b56a;
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+}
+.sms-preview-box[open] summary::before,
+.rc-math[open] summary::before {
+  transform: rotate(45deg);
+}
+.sms-preview {
+  margin: 0.4rem 0 0;
+  padding: 0.85rem 1rem;
+  white-space: pre-wrap;
+  font-family: Outfit, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--zls-cream-soft);
+  background: rgba(14, 24, 35, 0.6);
+  border: 1px solid rgba(216, 181, 106, 0.22);
+  border-radius: 14px 14px 14px 4px;
+  max-width: 34rem;
+}
+
+/* receipt */
+.rc-rows {
+  margin: 0;
+  padding: 0;
+}
+.rc-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  font-size: 0.95rem;
+}
+.rc-row dt {
+  color: var(--zls-cream-soft);
+  font-weight: 300;
+}
+.rc-row dd {
+  margin: 0;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.rc-sub dt,
+.rc-sub dd {
+  color: rgba(232, 224, 212, 0.78);
+  font-size: 0.88rem;
+}
+.rc-discount dd {
+  color: #b9dccf;
+}
+.rc-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 0.6rem;
+  padding-top: 0.75rem;
+  background: linear-gradient(90deg, #d8b56a 0%, #a07a52 45%, #f1d999 78%, #d8b56a 100%) top / 100% 1px no-repeat;
+}
+.rc-total span {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #dcc08a;
+}
+.rc-total strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.1rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.rc-deposit {
+  margin: 0.35rem 0 0.5rem;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #ecd6a4;
+}
+.rc-math ul {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0.65rem 0.8rem;
+  background: rgba(14, 24, 35, 0.45);
+  border-radius: 6px;
+}
+.rc-math li {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(232, 224, 212, 0.85);
+  margin: 0 0 0.3rem;
+  font-weight: 300;
+}
+.rc-math li:last-child {
+  margin-bottom: 0;
+}
+.rc-empty {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--zls-cream-soft);
+  font-weight: 300;
+}
+/* the big total sits inside the receipt now */
+.quote-panel .quote-total {
+  display: none;
+}
+
+/* mobile sticky bar: tap the total to expand the receipt */
+.sticky-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  background: none;
+  border: 0;
+  padding: 0.2rem 0.3rem 0.2rem 0;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  min-height: 48px;
+}
+.sticky-toggle .sticky-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.sticky-chev {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid #d8b56a;
+  border-bottom: 1.5px solid #d8b56a;
+  transform: rotate(-135deg) translate(-1px, -1px);
+  transition: transform 0.2s ease;
+}
+.sticky-bar.is-open .sticky-chev {
+  transform: rotate(45deg);
+}
+.sticky-receipt {
+  max-width: 1100px;
+  margin: 0 auto 0.75rem;
+  padding: 0.4rem 0.15rem 0.75rem;
+  max-height: 55vh;
+  overflow: auto;
+  border-bottom: 1px solid rgba(216, 181, 106, 0.2);
+}
+.sticky-receipt .rc-total {
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .itinerary {
+    grid-template-columns: 1fr 1fr;
+  }
+  .itinerary .iti-sec:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 900px) {
+  .itinerary {
+    grid-template-columns: 1fr;
+  }
+  .itinerary .iti-sec:first-child {
+    grid-column: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .itinerary {
+    grid-template-columns: 1fr 1fr;
+  }
+  .itinerary .iti-sec:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sms-preview-box summary::before,
+  .rc-math summary::before,
+  .sticky-chev {
+    transition: none;
+  }
+}
+
+.iti-sec {
+  margin: 0;
+  max-width: none;
+}
+.step-title:focus {
+  outline: none;
+}
+.page-book section.book-step {
+  padding: 0.25rem 0 0;
+  margin: 0;
+  max-width: none;
+}

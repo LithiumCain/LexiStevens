@@ -351,11 +351,12 @@
         <section class="book-step" data-step="4" hidden aria-labelledby="step-4-title">
           <h2 class="step-title" tabindex="-1" id="step-4-title">One last look</h2>
           <p class="step-lead">Look everything over, then text me your request. It becomes a reservation the moment I text you back.</p>
-          <div class="review-card" id="review-card"></div>
+          <div class="itinerary" id="review-card" aria-live="polite"></div>
           <label class="check-row" for="policy-agree">
             <input id="policy-agree" name="policyAgree" type="checkbox" value="yes" required>
             <span>I&rsquo;ve read and agree to the <a href="/concierge/policy/" id="policy-link">rider policy</a></span>
           </label>
+          <p class="policy-hint" id="policy-hint">Tick the box above and your request is ready to send.</p>
           <div class="handoff" id="handoff">
             <a class="zls-btn zls-btn-gold book-primary" id="sms-btn" href="sms:+15125341855">Send my request by text</a>
             <a class="zls-btn zls-btn-ghost" id="tel-btn" href="tel:+15125341855">Prefer to call? 512.534.1855</a>
@@ -363,6 +364,10 @@
             <a class="zls-btn zls-btn-gold" id="pay-btn" hidden>Hold my ride · $50 deposit</a>
           </div>
           <p class="copy-status" id="copy-status" role="status"></p>
+          <details class="sms-preview-box">
+            <summary>Preview text message</summary>
+            <pre class="sms-preview" id="sms-preview"></pre>
+          </details>
           <p class="book-fine">Quotes are estimates, confirmed by text. A $50 deposit is arranged by text after this request. A booking is confirmed when I text you back.</p>
         </section>
 
@@ -386,11 +391,12 @@
   </main>
 
   <div class="sticky-bar" id="sticky-bar">
+    <div class="sticky-receipt quote-lines" id="sticky-receipt" hidden></div>
     <div class="sticky-inner">
-      <div>
-        <p class="sticky-label">Your estimate</p>
-        <p class="sticky-total" id="sticky-total">—</p>
-      </div>
+      <button type="button" class="sticky-toggle" id="sticky-toggle" aria-expanded="false" aria-controls="sticky-receipt">
+        <span class="sticky-label">Your estimate <span class="sticky-chev" aria-hidden="true"></span></span>
+        <span class="sticky-total" id="sticky-total">—</span>
+      </button>
       <button type="button" class="zls-btn zls-btn-gold" id="sticky-btn">Continue</button>
     </div>
   </div>
